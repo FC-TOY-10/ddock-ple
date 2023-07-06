@@ -1,7 +1,16 @@
+import { Route, Routes } from 'react-router-dom'
+import { Layout } from 'components/index'
+import { Home } from 'pages/index'
+
 export const App = () => {
   return (
-    <>
-      <h1>App</h1>
-    </>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route
+          path="/"
+          element={<Home />}
+        />
+      </Route>
+    </Routes>
   )
 }
