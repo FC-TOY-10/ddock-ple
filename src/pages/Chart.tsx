@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { ChartTab } from 'components/chart'
+import { ChartTab, WeeklyChart, MonthlyChart } from 'components/chart'
 import { chartTabs } from 'constants/index'
 
 export const Chart = () => {
@@ -15,6 +15,7 @@ export const Chart = () => {
         selectedTab={selectedTab}
         onClickTab={handleTabChanged}
       />
+      {selectedTab === chartTabs[0].title ? <WeeklyChart /> : <MonthlyChart />}
     </div>
   )
 }
