@@ -8,5 +8,5 @@ const HomeContainer = styled.main`
   width: 100%;
   flex-grow: 1;
   height: 100%;
-  background-color: purple;
+  background-color: var(--color-white);
 `
