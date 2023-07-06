@@ -1,21 +1,24 @@
 import { Outlet } from 'react-router-dom'
 import { Header, BottomNav } from 'components/index'
 import styled from 'styled-components'
-
+import GlobalStyle from '@/GlobalStyle'
 export const Layout = () => {
   return (
-    <Wrapper>
-      <Container>
-        <Header />
-        <Outlet />
-        <BottomNav />
-      </Container>
-    </Wrapper>
+    <>
+      <GlobalStyle />
+      <Wrapper>
+        <Container>
+          <Header />
+          <Outlet />
+          <BottomNav />
+        </Container>
+      </Wrapper>
+    </>
   )
 }
 
 const Wrapper = styled.div`
-  background-color: #eee;
+  background-color: var(--color-bg);
 `
 
 const Container = styled.div`
@@ -25,6 +28,6 @@ const Container = styled.div`
   max-width: 768px;
   margin-left: auto;
   margin-right: auto;
-  background-color: gray;
+  background-color: var(--color-white);
   min-height: 100vh;
 `
