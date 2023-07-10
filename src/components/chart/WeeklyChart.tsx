@@ -1,24 +1,70 @@
-import React from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { ChartCard } from 'components/index'
 import { chartCategory } from 'constants/index'
+import { getWeeklyData } from 'apis/index'
+import { ICalendarResponse, IWeeklyHistory } from 'types/index'
+import { getTodayYearMonth, getWeekEndDay, getWeekStartDay } from 'utils/index'
+
 import { Chart as ChartJS, ArcElement, Tooltip } from 'chart.js'
 import { Doughnut } from 'react-chartjs-2'
 import { styled } from 'styled-components'
+
 ChartJS.register(ArcElement, Tooltip)
 
 export const WeeklyChart = React.memo(() => {
-  const categoriesData = {
-    labels: chartCategory.map(category => category.category),
-    datasets: [
-      {
-        label: '지출 횟수',
-        data: [30, 20, 4, 1, 3, 2, 6],
-        backgroundColor: chartCategory.map(category => category.bgColor),
-        borderColor: chartCategory.map(category => category.borderColor),
-        borderWidht: 1
-      }
-    ]
-  }
+  const [weeklyHistories, setWeeklyHistories] = useState<IWeeklyHistory[]>([])
+
+  const categoriesData = useMemo(() => {
+    const allHistories = [] as ICalendarResponse[]
+    weeklyHistories.forEach(data => allHistories.push(...data.histories))
+
+    return {
+      labels: chartCategory.map(category => category.category),
+      datasets: [
+        {
+          label: '지출 횟수',
+          data: [30, 20, 4, 1, 3, 2, 6],
+          backgroundColor: chartCategory.map(category => category.bgColor),
+          borderColor: chartCategory.map(category => category.borderColor),
+          borderWidht: 1
+        }
+      ]
+    }
+  }, [weeklyHistories])
+
+  useEffect(() => {
+    const todayYearMonth = getTodayYearMonth()
+
+    getWeeklyData({
+      ...todayYearMonth,
+      userId: import.meta.env.VITE_USER_ID
+    })
+      .then(res => {
+        const weeklyData = Object.entries(res).filter(entry => {
+          return parseInt(entry[0]) >= getWeekStartDay() && parseInt(entry[0]) <= getWeekEndDay()
+        })
+
+        const weekDays = Array(7)
+          .fill(0)
+          .map((_, index) => getWeekStartDay() + index)
+
+        const weeklyHistories: IWeeklyHistory[] = weekDays.map(day => {
+          const dayIndex = weeklyData.findIndex(data => parseInt(data[0]) === day)
+          if (dayIndex !== -1) {
+            return {
+              ...todayYearMonth,
+              day: day,
+              histories: weeklyData[dayIndex][1] as ICalendarResponse[]
+            }
+          } else {
+            return { ...todayYearMonth, day: day, histories: [] as ICalendarResponse[] }
+          }
+        })
+        return weeklyHistories
+      })
+      .then(histories => setWeeklyHistories(histories))
+  }, [])
+
   return (
     <Container>
       <ChartCard />
