@@ -13,6 +13,7 @@ export const ChartTab = React.memo(({ selectedTab, onClickTab }: ChartTabProps) 
       <ul>
         {chartTabs.map(tab => (
           <TabItem
+            key={tab.title}
             isSelected={selectedTab === tab.title}
             onClick={() => onClickTab(tab.title)}>
             {tab.title}
