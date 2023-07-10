@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { IWeeklyHistory } from 'types/index'
 
 import { styled } from 'styled-components'
@@ -19,9 +19,10 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip,
 
 type ChartCardProps = {
   weeklyDatas: IWeeklyHistory[]
+  loading: boolean
 }
 
-export const ChartCard = React.memo(({ weeklyDatas }: ChartCardProps) => {
+export const ChartCard = React.memo(({ weeklyDatas, loading }: ChartCardProps) => {
   const startDay = moment().startOf('week')
 
   const weekOfMonth = (m: Moment) => m.week() - moment(m).startOf('month').week() + 1
@@ -61,6 +62,32 @@ export const ChartCard = React.memo(({ weeklyDatas }: ChartCardProps) => {
     })
   }, [weeklyDatas])
 
+  const maxIncomePrice = useMemo(() => Math.max(...incomeTotalList), [incomeTotalList])
+  const maxExpendPrice = useMemo(() => Math.max(...expendTotalList), [expendTotalList])
+
+  const options = {
+    redraw: true,
+    responsive: true,
+    interaction: {
+      mode: 'index' as const,
+      intersect: false
+    },
+    scales: {
+      수입: {
+        ticks: { stepSize: 5000 },
+        max: Math.ceil(Math.max(maxIncomePrice, maxExpendPrice) / 5000) * 5000
+      },
+      지출: {
+        display: false,
+        ticks: { stepSize: 5000 },
+        grid: {
+          drawOnChartArea: false
+        },
+        max: Math.ceil(Math.max(maxIncomePrice, maxExpendPrice) / 5000) * 5000
+      }
+    }
+  }
+
   const data = useMemo(() => {
     return {
       labels,
@@ -92,11 +119,12 @@ export const ChartCard = React.memo(({ weeklyDatas }: ChartCardProps) => {
           지출 {expendTotalList.reduce((acc, cur) => (acc += cur), 0).toLocaleString()} 원
         </span>
       </p>
-
-      <Line
-        options={{ responsive: true }}
-        data={data}
-      />
+      {loading ? null : (
+        <Line
+          options={options}
+          data={data}
+        />
+      )}
     </Card>
   )
 })

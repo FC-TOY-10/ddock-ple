@@ -12,6 +12,7 @@ import { styled } from 'styled-components'
 ChartJS.register(ArcElement, Tooltip)
 
 export const WeeklyChart = React.memo(() => {
+  const [loading, setLoading] = useState<boolean>(false)
   const [weeklyHistories, setWeeklyHistories] = useState<IWeeklyHistory[]>([])
 
   const categoriesData = useMemo(() => {
@@ -34,7 +35,7 @@ export const WeeklyChart = React.memo(() => {
 
   useEffect(() => {
     const todayYearMonth = getTodayYearMonth()
-
+    setLoading(true)
     getWeeklyData({
       ...todayYearMonth,
       userId: import.meta.env.VITE_USER_ID
@@ -60,6 +61,7 @@ export const WeeklyChart = React.memo(() => {
             return { ...todayYearMonth, day: day, histories: [] as ICalendarResponse[] }
           }
         })
+        setLoading(false)
         return weeklyHistories
       })
       .then(histories => setWeeklyHistories(histories))
@@ -67,7 +69,10 @@ export const WeeklyChart = React.memo(() => {
 
   return (
     <Container>
-      <ChartCard weeklyDatas={weeklyHistories} />
+      <ChartCard
+        weeklyDatas={weeklyHistories}
+        loading={loading}
+      />
       <AnalyzeBox>
         <Box>
           {/* 카테고리 별 분석 파이 */}
