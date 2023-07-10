@@ -67,7 +67,7 @@ export const WeeklyChart = React.memo(() => {
 
   return (
     <Container>
-      <ChartCard />
+      <ChartCard weeklyDatas={weeklyHistories} />
       <AnalyzeBox>
         <Box>
           {/* 카테고리 별 분석 파이 */}
