@@ -12,7 +12,7 @@ export function ModalContent({ onClose, onSearch}: { onClose: () => void, onSear
     amount: 0,
     priceText: '',
     date: new Date(),
-    category: "",
+    category: "입금",
     radioStatus: "입금"
   });
 
@@ -121,7 +121,7 @@ export function ModalContent({ onClose, onSearch}: { onClose: () => void, onSear
 
   const sendReg = async (updatedData:any) => {
     try {
-      const response = await axios.post('/api/expenses', updatedData);
+      const response = await axios.post('http://52.78.195.183:3003/api/expenses', updatedData);
       console.log(response);
       if(response.status == 201){
         alert("등록되었습니다.");

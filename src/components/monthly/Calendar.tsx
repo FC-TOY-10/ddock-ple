@@ -1,44 +1,13 @@
-import { useState, useEffect, useRef }from "react";
+import { useState, useEffect }from "react";
 import FullCalendar from "@fullcalendar/react"; 
 import dayGridPlugin from "@fullcalendar/daygrid"; 
 import styled from 'styled-components';
 import { AiFillPlusCircle } from 'react-icons/ai'
+import { BsTrash } from "react-icons/bs";
 import interactionPlugin from '@fullcalendar/interaction';
 import { ModalContent } from "./InputModal";
 import axios from "axios";
-
-
-/*
-생각해봐야할 문제점. 
-달력 조회 api를 보면 현재 클릭한 날짜의 파라미터 값을 넘겨야함.
-
-
-1. 달력 조회 (달력 이전,다음 클릭시 해당 월에 맞는 데이터 조회 )
-
-2. 달력 화면 그리기 (달력 라이브러리 이벤트 노출 부분 코드 작성필요)
-- 달력 일에 관하여 화면에 
-+ 데이터 (입금)
-- 데이터 (지출)
-이렇게 두개 씩 일별로 노출이 필요함 
-const sampleData = 
-[
-  {title:'-2000'
-  , date:'2023-07-08'
-  }
-  ,
-  {title:'+2000'
-  , date:'2023-07-08'
-  }
-];
-
-
-3. 해당 일을 클릭시 
-- 해당 일로 key로 매칭해서 해당 일에 관한 데이터 리스트 노출
-- 하단에 상세 정보 노출
-- 하단에서는 삭제 가능도 해야함 
-- 하단에서 삭제시 달력에 있는 화면그리는부분도 변동되어야함
-
-*/
+import { error } from "console";
 
 type Data = {
   amount: string;
@@ -48,16 +17,10 @@ type Data = {
   number: string;
 };
 
-type Result = {
-  title:string;
-  date: Date;
-};
-
 type TResult = {
   title: number;
   date: string;
 };
-
 
 interface Transaction {
   _id: string;
@@ -165,14 +128,9 @@ export default function Full () {
 
   useEffect(() => {
     Search();   
-    //getData();
-    //alert("입장") 
   },[]);
 
   useEffect(() => {
-    // Search();   
-    //getData();
-    //alert("입장") 
     handleDateClick(null);
   },[viewData]);
   
@@ -185,11 +143,10 @@ export default function Full () {
     setShowModal(false);
   };
 
-
   const getData = async(year: string,month: string) => {
     try {
       const response = await axios.get(
-        ` /api/expenses/calendar?year=${year}&month=${month}&userId=team10`
+        ` http://52.78.195.183:3003/api/expenses/calendar?year=${year}&month=${month}&userId=team10`
       );
       console.log(response.data);
       return response;
@@ -215,6 +172,23 @@ export default function Full () {
     console.log(viewDetail)
   };
 
+  const onDeletelist = async (itemId:any) => {
+    if (confirm('삭제하시겠습니까?')) {
+      try {
+        const response = await axios.delete(`http://52.78.195.183:3003/api/expenses/${itemId}`);
+        if (response.status === 200) {
+          alert('삭제되었습니다');
+          Search();
+        } else {
+          alert('삭제 실패');
+        }
+      } catch (error) {
+        alert('에러 발생');
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <>
     <PriceCntainer>
@@ -224,7 +198,6 @@ export default function Full () {
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
-        //eventDisplay= "list-item"
         eventClick={(handleDateClick)}
         dateClick={(handleblankDateClick)}
         events={viewDrow as unknown as EventInit[]}
@@ -234,22 +207,41 @@ export default function Full () {
     <ListDatabox>
       <ListboxCenter>
         <PlusMoneny>입금</PlusMoneny>
-        {/* <MinusMoney>지출</MinusMoney> */}
-
         <ListboxLeft>
           {viewDetail &&
-            viewDetail.map((item) => (
-              item.amount > 0 ? <div>{item.amount}</div> : null
-            ))
+            viewDetail.map((item) =>
+              item.amount > 0 ? (
+                <div className="innerText">
+                  <InnerList>
+                  {item.amount}
+                    <span>
+                      <BsTrash className="trashIcon" 
+                        onClick={() => onDeletelist(item._id)}
+                      />
+                    </span>
+                  </InnerList>
+                </div>
+              ) : null
+            )
           }
         </ListboxLeft>
 
         <MinusMoney>지출</MinusMoney>
         <ListboxRight>
           {viewDetail &&
-            viewDetail.map((item) => (
-              item.amount < 0 ? <div>{item.amount}</div> : null
-            ))
+            viewDetail.map((item) => 
+              item.amount < 0 ? ( 
+                <div className="innerText">
+                  <InnerList>
+                  {item.amount}
+                    <span>
+                      <BsTrash className="trashIcon"
+                      onClick={() => onDeletelist(item._id)}/>
+                    </span>
+                  </InnerList>
+                </div>
+              ): null
+            )
           }
         </ListboxRight>
       </ListboxCenter>
@@ -435,6 +427,24 @@ const ListboxLeft = styled.div`
   float: left;
   overflow-y: auto;
   max-height: 160px;
+  border-radius: 10px;
+`
+const InnerList = styled.div`
+width: 93%;
+padding: 5px;
+height: 30px;
+margin-top: 5px;
+margin-left: 10px;
+//background-color: yellow;
+border-bottom: 1px solid #F3EFE0;
+position: relative;
+color: white;
+
+.trashIcon{
+  position: absolute;
+  left: 195px;
+}
+
 `
 const ListboxRight = styled.div`
   width: 46%;
@@ -445,14 +455,5 @@ const ListboxRight = styled.div`
   float: right;
   overflow-y: auto;
   max-height: 160px;
+  border-radius: 10px;
 `
-
-const ListBox = styled.div`
-  width: 98%;
-  height: 30px;
-  background-color: pink;
-  position: absolute;
-`
-
-
-
