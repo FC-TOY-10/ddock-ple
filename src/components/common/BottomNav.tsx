@@ -24,7 +24,7 @@ export const BottomNav = () => {
           <Link to="/calendar">{path === '/calendar' ? <AiFillCalendar /> : <AiOutlineCalendar />}</Link>
         </TabItem>
         <TabItem isActive={path === '/weekly'}>
-          <Link to="/">{path === '/weekly' ? <AiFillSchedule /> : <AiOutlineSchedule />}</Link>
+          <Link to="/weekly">{path === '/weekly' ? <AiFillSchedule /> : <AiOutlineSchedule />}</Link>
         </TabItem>
         <TabItem isActive={path === '/chart'}>
           <Link to="/chart">{path === '/chart' ? <AiFillPieChart /> : <AiOutlinePieChart />}</Link>

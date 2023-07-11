@@ -2,7 +2,23 @@ import { Outlet } from 'react-router-dom'
 import { Header, BottomNav } from 'components/index'
 import styled from 'styled-components'
 import GlobalStyle from '@/GlobalStyle'
+
 export const Layout = () => {
+  return (
+    <>
+      <GlobalStyle />
+      <Wrapper>
+        <Container>
+          <Header />
+          <Outlet />
+          <BottomNav />
+        </Container>
+      </Wrapper>
+    </>
+  )
+}
+
+export const Layout2 = () => {
   return (
     <>
       <GlobalStyle />
