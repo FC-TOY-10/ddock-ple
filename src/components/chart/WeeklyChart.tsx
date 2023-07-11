@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { ChartCard } from 'components/index'
 import { chartCategory } from 'constants/index'
-import { getWeeklyData } from 'apis/index'
-import { ICalendarResponse, IWeeklyHistory } from 'types/index'
-import { getTodayYearMonth, getWeekEndDay, getWeekStartDay } from 'utils/index'
+import { getWeeklyData, getWeeklySummary } from 'apis/index'
+import { ICalendarResponse, IWeeklyHistory, ISummaryResponse } from 'types/index'
+import { getTodayYearMonth, getWeekEndDay, getWeekStartDay, getPrevWeeklyNumber } from 'utils/index'
 
 import { Chart as ChartJS, ArcElement, Tooltip } from 'chart.js'
 import { Doughnut } from 'react-chartjs-2'
@@ -11,14 +11,24 @@ import { styled } from 'styled-components'
 
 ChartJS.register(ArcElement, Tooltip)
 
+interface IWeeklySummary {
+  prevTotal: number | null
+  currentTotal: number | null
+}
+
 export const WeeklyChart = React.memo(() => {
   const [loading, setLoading] = useState<boolean>(false)
   const [weeklyHistories, setWeeklyHistories] = useState<IWeeklyHistory[]>([])
+  const [weeklySummary, setWeeklySummary] = useState<IWeeklySummary>({
+    prevTotal: null,
+    currentTotal: null
+  })
+
+  const labels = chartCategory.map(category => category.category)
 
   const categoriesData = useMemo(() => {
     const allHistories = [] as ICalendarResponse[]
     weeklyHistories.forEach(data => allHistories.push(...data.histories))
-    const labels = chartCategory.map(category => category.category)
     const datas = labels.map(
       category => allHistories.filter(data => data.category === category).length || 0
     )
@@ -36,6 +46,30 @@ export const WeeklyChart = React.memo(() => {
       ]
     }
   }, [weeklyHistories])
+
+  // 주별 지출 합계 내역 조회
+  const fetchWeeklySummary = () => {
+    getWeeklySummary().then(res => {
+      const prevWeek = getPrevWeeklyNumber()
+      const prevSummary: ISummaryResponse | null = res.find(
+        (data: ISummaryResponse) => parseInt(data._id.split('-')[1]) === prevWeek
+      )
+      const currentSummary: ISummaryResponse | null = res.find(
+        (data: ISummaryResponse) => parseInt(data._id.split('-')[1]) === prevWeek + 1
+      )
+      const prevTotal = prevSummary?.totalAmount ?? 0
+      const currentTotal = currentSummary?.totalAmount ?? 0
+
+      setWeeklySummary({
+        prevTotal: prevTotal,
+        currentTotal: currentTotal
+      })
+    })
+  }
+
+  useEffect(() => {
+    fetchWeeklySummary()
+  }, [])
 
   useEffect(() => {
     const todayYearMonth = getTodayYearMonth()
@@ -65,6 +99,7 @@ export const WeeklyChart = React.memo(() => {
             return { ...todayYearMonth, day: day, histories: [] as ICalendarResponse[] }
           }
         })
+
         setLoading(false)
         return weeklyHistories
       })
@@ -82,6 +117,7 @@ export const WeeklyChart = React.memo(() => {
           {/* 카테고리 별 분석 파이 */}
           <div className="inner">
             <h3>카테고리 별 지출 횟수</h3>
+
             <Doughnut
               data={categoriesData}
               options={{
@@ -105,12 +141,27 @@ export const WeeklyChart = React.memo(() => {
         <Box>
           {/* 가장 큰 지출 항목 */}
           <div className="inner">
-            <p>이번주는 지난주 대비</p>
-            <p>
-              지출이 <span className="percent">30%</span> 감소했어요!
-            </p>
-
-            <div>지출 금액이 가장 큰 내역은 ooo 입니다.</div>
+            {weeklySummary.prevTotal && weeklySummary.currentTotal && (
+              <div className="compare">
+                <p>이번주는 지난주 대비</p>
+                <p>
+                  {weeklySummary.prevTotal <= weeklySummary.currentTotal ? (
+                    <span className="percent">
+                      {(weeklySummary.currentTotal - weeklySummary.prevTotal).toLocaleString()}원
+                    </span>
+                  ) : (
+                    <span className="percent">
+                      {(weeklySummary.prevTotal - weeklySummary.currentTotal).toLocaleString()}원
+                    </span>
+                  )}
+                </p>
+                {weeklySummary.prevTotal <= weeklySummary.currentTotal ? (
+                  <p>더 많아요!</p>
+                ) : (
+                  <p>더 적어요!</p>
+                )}
+              </div>
+            )}
           </div>
         </Box>
       </AnalyzeBox>
@@ -160,16 +211,35 @@ const Box = styled.div`
       margin-bottom: 20px;
     }
 
-    span {
-      font-size: 20px;
+    div.compare {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
 
-      &.percent {
-        background-color: rgba(241, 17, 17, 0.3);
-        padding: 4px;
+      p {
+        font-size: 20px;
+        font-weight: 500;
+        text-align: center;
+        margin-bottom: 0;
+        line-height: 1.5;
       }
 
-      &.highlight {
-        color: red;
+      span {
+        font-size: 24px;
+        font-weight: 700;
+
+        &.percent {
+          background-color: rgba(241, 17, 17, 0.3);
+          padding: 4px;
+        }
+
+        &.highlight {
+          color: red;
+        }
       }
     }
   }
