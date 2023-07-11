@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import { Layout } from 'components/index'
-import { Home } from 'pages/index'
+import { Chart, Home } from 'pages/index'
 
 export const App = () => {
   return (
@@ -9,6 +9,10 @@ export const App = () => {
         <Route
           path="/"
           element={<Home />}
+        />
+        <Route
+          path="/chart"
+          element={<Chart />}
         />
       </Route>
     </Routes>
