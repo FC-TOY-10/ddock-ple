@@ -8,7 +8,7 @@ import axios from "axios";
 
 export function ModalContent({ onClose, onSearch}: { onClose: () => void, onSearch: (params?: any) => void }) {
   const [ViewData, setViewData] = useState({
-    userId: "user5507",
+    userId: "team10",
     amount: 0,
     priceText: '',
     date: new Date(),
@@ -73,16 +73,6 @@ export function ModalContent({ onClose, onSearch}: { onClose: () => void, onSear
 
   const formatter = new Intl.NumberFormat("ko-KR");
 
-  // const UTCchangeKST = () => {
-  //   const date = new Date();
-  //   const utc = date.getTime() + date.getTimezoneOffset() * 60 * 1000;
-  //   const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
-  //   const kr_curr = new Date(utc + KR_TIME_DIFF);
-  //   const year = kr_curr.getFullYear();
-  //   const month = kr_curr.getMonth() + 1;
-  //   const day = kr_curr.getDate();
-  //   return `${year} /${month}/${day}`;
-  // };
 
   const DatePick = forwardRef(({ value, onClick}: { value: string, onClick: () => void}, ref) => (
     <Datebutton className='custom-btn' onClick={onClick} >
@@ -97,10 +87,7 @@ export function ModalContent({ onClose, onSearch}: { onClose: () => void, onSear
       category: value
     }));
   };
-
-  // const onSearch = (value:any) => {
-  //   console.log('search:', value);
-  // };
+ 
 
   const handleButtonInnerClick = () => {
     onClose();

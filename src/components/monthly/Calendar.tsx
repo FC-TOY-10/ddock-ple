@@ -107,6 +107,7 @@ export default function Full () {
       // setViewData(response);
       setViewData([response?.data]);
       setViewDrow(transformData(response?.data));
+      handleDateClick(null);
     })
   };
 
@@ -163,10 +164,18 @@ export default function Full () {
   }
 
   useEffect(() => {
-    //Search();
+    Search();   
     //getData();
-    alert("입장")
+    //alert("입장") 
   },[]);
+
+  useEffect(() => {
+    // Search();   
+    //getData();
+    //alert("입장") 
+    handleDateClick(null);
+  },[viewData]);
+  
 
   const handlePlus = () => {
     setShowModal(true);
@@ -180,7 +189,7 @@ export default function Full () {
   const getData = async(year: string,month: string) => {
     try {
       const response = await axios.get(
-        `/api/expenses/calendar?year=${year}&month=${month}&userId=user5507`
+        ` /api/expenses/calendar?year=${year}&month=${month}&userId=team10`
       );
       console.log(response.data);
       return response;
@@ -195,7 +204,12 @@ export default function Full () {
   }
 
   const handleDateClick = async (info:any) => {
-    const time = new Date(info.event.startStr)
+    let time 
+    if(info){
+      time = new Date(info.event.startStr);
+    }else{
+      time = new Date();
+    }
     const day = time.getDate();
     setViewDetail(viewData[0][day]);
     console.log(viewDetail)
