@@ -9,7 +9,9 @@ export const Layout = () => {
       <Wrapper>
         <Container>
           <Header />
-          <Outlet />
+          <OutletWrapper>
+            <Outlet />
+          </OutletWrapper>
           <BottomNav />
         </Container>
       </Wrapper>
@@ -30,4 +32,8 @@ const Container = styled.div`
   margin-right: auto;
   background-color: var(--color-white);
   min-height: 100vh;
+`
+
+const OutletWrapper = styled.div`
+  flex-grow: 1;
 `

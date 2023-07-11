@@ -1,7 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import { Layout } from 'components/index'
-import { Home } from 'pages/index'
-import { Monthly } from 'pages/index'
+import { Chart, Home, Monthly } from 'pages/index'
 
 export const App = () => {
   return (
@@ -14,6 +13,10 @@ export const App = () => {
         <Route
           path="/calendar"
           element={<Monthly />}
+        />
+        <Route
+          path="/chart"
+          element={<Chart />}
         />
       </Route>
     </Routes>
