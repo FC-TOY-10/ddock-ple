@@ -18,13 +18,17 @@ export const WeeklyChart = React.memo(() => {
   const categoriesData = useMemo(() => {
     const allHistories = [] as ICalendarResponse[]
     weeklyHistories.forEach(data => allHistories.push(...data.histories))
+    const labels = chartCategory.map(category => category.category)
+    const datas = labels.map(
+      category => allHistories.filter(data => data.category === category).length || 0
+    )
 
     return {
-      labels: chartCategory.map(category => category.category),
+      labels: labels,
       datasets: [
         {
           label: '지출 횟수',
-          data: [30, 20, 4, 1, 3, 2, 6],
+          data: datas,
           backgroundColor: chartCategory.map(category => category.bgColor),
           borderColor: chartCategory.map(category => category.borderColor),
           borderWidht: 1
