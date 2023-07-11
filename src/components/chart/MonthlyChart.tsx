@@ -1,5 +1,9 @@
-import React from 'react'
-import { ChartCard } from 'components/index'
+import React, { useEffect, useState } from 'react'
+import { MonthlyTotalCard } from 'components/index'
+import { getWeeklyData } from 'apis/index'
+import { ICalendarResponse, IWeeklyHistory } from 'types/index'
+import { getTodayYearMonth, getWeekEndDay, getWeekStartDay } from 'utils/index'
+
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
 
@@ -8,13 +12,15 @@ import { styled } from 'styled-components'
 ChartJS.register(CategoryScale, LinearScale, BarElement)
 
 export const MonthlyChart = React.memo(() => {
+  const [loading, setLoading] = useState<boolean>(false)
+  const [monthlyHistories, setMonthlyHistories] = useState<ICalendarResponse[]>([])
   const top3Categories = ['식비', '여가', '쇼핑']
   const data = {
     labels: top3Categories,
     datasets: [
       {
         label: '지출 금액',
-        data: top3Categories.map((c, index) => 100000 * (index + 2)),
+        data: top3Categories.map((_, index) => 100000 * (index + 2)),
         backgroundColor: [
           'rgba(227, 65, 100, 0.5)',
           'rgba(30, 96, 162, 0.5)',
@@ -26,9 +32,24 @@ export const MonthlyChart = React.memo(() => {
     ]
   }
 
+  useEffect(() => {
+    const todayYearMonth = getTodayYearMonth()
+    setLoading(true)
+    getWeeklyData({
+      ...todayYearMonth,
+      userId: import.meta.env.VITE_USER_ID
+    }).then(res => {
+      const histories = [] as ICalendarResponse[]
+      const monthlyData = Object.entries(res)
+      monthlyData.forEach(data => histories.push(...(data[1] as ICalendarResponse[])))
+      setMonthlyHistories(histories)
+      setLoading(false)
+    })
+  }, [])
+
   return (
     <Container>
-      {/* <ChartCard /> */}
+      {loading ? null : <MonthlyTotalCard monthlyData={monthlyHistories} />}
       <AnalyzeBox>
         <Box>
           {/* 카테고리 별 분석 파이 */}
