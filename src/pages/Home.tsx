@@ -80,7 +80,7 @@ const Container = styled.div`
   width: 768px;
   margin-left: auto;
   margin-right: auto;
-  height: calc(100vh - 64px);
+  height: calc(100vh - 114px);
   display: flex;
   align-items: center;
   flex-direction: column;

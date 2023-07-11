@@ -24,7 +24,10 @@ export const Layout2 = () => {
       <GlobalStyle />
       <Wrapper>
         <Container>
-          <Outlet />
+          <Header />
+          <OutletWrapper>
+            <Outlet />
+          </OutletWrapper>
           <BottomNav />
         </Container>
       </Wrapper>
@@ -45,4 +48,8 @@ const Container = styled.div`
   margin-right: auto;
   background-color: var(--color-white);
   min-height: 100vh;
+`
+
+const OutletWrapper = styled.div`
+  flex-grow: 1;
 `

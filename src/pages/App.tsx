@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import { Layout, Layout2 } from 'components/index'
-import { Home, Weekly } from 'pages/index'
+import { Home, Weekly, Chart } from 'pages/index'
 
 export const App = () => {
   return (
@@ -11,6 +11,8 @@ export const App = () => {
 
       <Route element={<Layout />}>
         <Route path="/weekly" element={<Weekly />} />
+        <Route path="/chart" element={<Chart />}
+        />
       </Route>
     </Routes>
   )
