@@ -50,12 +50,14 @@ export const MonthlyTotalCard = React.memo(({ monthlyData }: MonthlyTotalCardPro
 
   return (
     <Card>
-      <h4>{`Team10님의 ${nowDate.format('M월 ')} 자산 분석`}</h4>
+      <h3>{`Team10님의 ${nowDate.format('M월 ')} 자산 분석`}</h3>
       <p className="total">
         <span>수입 {incomeTotalPrice.toLocaleString()}원</span>
         <span>지출 {expendTotalPrice.toLocaleString()} 원</span>
       </p>
-      <ChartWrapper>{false ? null : <Pie data={data} />}</ChartWrapper>
+      <ChartWrapper>
+        {monthlyData ? <h4>월간 자산 데이터가 없습니다.</h4> : <Pie data={data} />}
+      </ChartWrapper>
     </Card>
   )
 })
@@ -66,7 +68,7 @@ const Card = styled.div`
   background-color: #2f2f2f;
   padding: 20px 20px 40px 20px;
 
-  h4 {
+  h3 {
     text-align: center;
     font-size: 20px;
     font-weight: 700;
@@ -83,6 +85,15 @@ const Card = styled.div`
     display: flex;
     gap: 20px;
     justify-content: center;
+  }
+
+  h4 {
+    font-size: 20px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #eee;
   }
 `
 

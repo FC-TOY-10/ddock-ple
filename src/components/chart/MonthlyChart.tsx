@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { MonthlyTotalCard, Top3CategoryChart } from 'components/index'
+import { MonthlyTotalCard, Top3CategoryChart, MonthlyRadarChart } from 'components/index'
 import { getWeeklyData } from 'apis/index'
-import { ICalendarResponse, IWeeklyHistory } from 'types/index'
-import { getTodayYearMonth, getWeekEndDay, getWeekStartDay } from 'utils/index'
+import { ICalendarResponse } from 'types/index'
+import { getTodayYearMonth } from 'utils/index'
 
 import { styled } from 'styled-components'
 
@@ -21,6 +21,7 @@ export const MonthlyChart = React.memo(() => {
       const monthlyData = Object.entries(res)
       monthlyData.forEach(data => histories.push(...(data[1] as ICalendarResponse[])))
       setMonthlyHistories(histories)
+      console.log(histories)
       setLoading(false)
     })
   }, [])
@@ -42,12 +43,13 @@ export const MonthlyChart = React.memo(() => {
         </Box>
         <Box>
           <div className="inner">
-            <p>이번주는 지난주 대비</p>
-            <p>
-              지출이 <span className="percent">30%</span> 감소했어요!
-            </p>
-
-            <div>지출 금액이 가장 큰 내역은 ooo 입니다.</div>
+            {monthlyHistories.length < 0 ? (
+              loading ? null : (
+                <MonthlyRadarChart monthlyData={monthlyHistories} />
+              )
+            ) : (
+              <h4>데이터가 없습니다.</h4>
+            )}
           </div>
         </Box>
       </AnalyzeBox>
@@ -113,6 +115,13 @@ const Box = styled.div`
         color: red;
       }
     }
+
+    h4 {
+      font-size: 20px;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 `
-const BarWapper = styled.div``
