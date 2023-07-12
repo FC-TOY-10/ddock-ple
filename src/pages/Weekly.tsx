@@ -16,7 +16,7 @@ export const Weekly = () => {
       const currentDate = new Date();
       const currentYear = currentDate.getFullYear();
       const currentMonth = currentDate.getMonth() + 1;
-      
+      // 현재 연도와 월에 해당하는 지출 데이터
       const expensesData = await fetchCalendar(currentYear, currentMonth);
       // 가져온 지출 데이터를 주간 지출 데이터로 변환
       setWeeklyExpenses(calculateWeekly(expensesData)); 
@@ -39,12 +39,14 @@ export const Weekly = () => {
     <Container>
       {weeklyExpenses.map((weekExpenses: Calendar[], weekIndex: number) => (
         <>
+          {/* 주간 요약 정보 */}
           <WeekSummary
             key={weekIndex}
             weekExpenses={weekExpenses}
             index={weekIndex}
             onClick={() => handleWeekClick(weekIndex)}
           />
+           {/* 선택된 주의 일별 지출 정보 */}
           {selectedWeek === weekIndex && (
             <DailyExpense
             dailyExpenses={weekExpenses}

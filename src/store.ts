@@ -1,14 +1,17 @@
 import create from 'zustand';
 import { Calendar, ExpenseData } from './types';
+import { deleteExpense, updateExpense } from './apis/Expense';
 
 export const useStore = create((set) => ({
   expensesData: [],
   setExpensesData: (expenses: Calendar[]) => {
     set({ expensesData: expenses });
   },
-  removeExpense: (weekIndex: number, expenseIndex: number) => {
+  // 제거
+  removeExpense: async (weekIndex: number, expenseIndex: number, expenseId: string) => {
+    await deleteExpense(expenseId);
     set((state) => {
-      const newExpenses = state.expensesData.map((weekExpenses:Calendar[], index: number) => {
+      const newExpenses = state.expensesData.map((weekExpenses: Calendar[], index: number) => {
         return index === weekIndex
           ? weekExpenses.filter((_, index: number) => {
               return index !== expenseIndex;
@@ -18,7 +21,9 @@ export const useStore = create((set) => ({
       return { expensesData: newExpenses };
     });
   },
-  updateExpense: (weekIndex:number, expenseIndex:number, updatedExpense: ExpenseData) => {
+  // 업데이트
+  updateExpense: async (weekIndex: number, expenseIndex: number, updatedExpense: ExpenseData, expenseId: string) => {
+    await updateExpense(updatedExpense, expenseId);
     set((state) => {
       const newExpenses = state.expensesData.map((weekExpenses: Calendar[], index: number) => {
         return index === weekIndex

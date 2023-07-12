@@ -1,7 +1,6 @@
 import { Modal } from '../common';
 import styled from 'styled-components';
 import { useState,FormEvent, ChangeEvent } from 'react';
-import { updateExpense } from '@/apis/Expense';
 import { Calendar, ExpenseData } from '@/types';
 
 type UpdateModalProps = {
@@ -14,7 +13,7 @@ export const UpdateModal = ({ closeModal, expense, onUpdate }:UpdateModalProps) 
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // 업데이트 데이터
@@ -26,7 +25,6 @@ export const UpdateModal = ({ closeModal, expense, onUpdate }:UpdateModalProps) 
     };
 
     // 응답이 성공적이면 input창을 초기화하고 modal을 닫음
-    await updateExpense(updatedExpense, expense._id);
     onUpdate(updatedExpense);
     setAmount('');
     setCategory('');
@@ -36,6 +34,7 @@ export const UpdateModal = ({ closeModal, expense, onUpdate }:UpdateModalProps) 
   return (
     <Modal closeModal={closeModal}>
       <form onSubmit={handleSubmit}>
+        {/* 금액 수정란 */}
         <label htmlFor="amount">금액: </label>
         <Input
           type="number"
@@ -45,6 +44,7 @@ export const UpdateModal = ({ closeModal, expense, onUpdate }:UpdateModalProps) 
           placeholder='금액을 입력하세요'
           required
         />
+        {/* 카테고리 수정란 */}
         <label htmlFor="category">카테고리: </label>
         <CategorySelect
           id="category"
