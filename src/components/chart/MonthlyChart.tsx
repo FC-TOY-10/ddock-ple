@@ -1,36 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { MonthlyTotalCard } from 'components/index'
+import { MonthlyTotalCard, Top3CategoryChart } from 'components/index'
 import { getWeeklyData } from 'apis/index'
 import { ICalendarResponse, IWeeklyHistory } from 'types/index'
 import { getTodayYearMonth, getWeekEndDay, getWeekStartDay } from 'utils/index'
 
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement } from 'chart.js'
-import { Bar } from 'react-chartjs-2'
-
 import { styled } from 'styled-components'
-
-ChartJS.register(CategoryScale, LinearScale, BarElement)
 
 export const MonthlyChart = React.memo(() => {
   const [loading, setLoading] = useState<boolean>(false)
   const [monthlyHistories, setMonthlyHistories] = useState<ICalendarResponse[]>([])
-  const top3Categories = ['식비', '여가', '쇼핑']
-  const data = {
-    labels: top3Categories,
-    datasets: [
-      {
-        label: '지출 금액',
-        data: top3Categories.map((_, index) => 100000 * (index + 2)),
-        backgroundColor: [
-          'rgba(227, 65, 100, 0.5)',
-          'rgba(30, 96, 162, 0.5)',
-          'rgba(92, 243, 122, 0.5)'
-        ],
-        maxBarThickness: 40,
-        offset: 100
-      }
-    ]
-  }
 
   useEffect(() => {
     const todayYearMonth = getTodayYearMonth()
@@ -54,43 +32,13 @@ export const MonthlyChart = React.memo(() => {
         <Box>
           {/* 카테고리 별 분석 파이 */}
           <div className="inner">
-            <h3>지출 TOP 3 카테고리</h3>
-            <BarWapper>
-              <Bar
-                updateMode="resize"
-                options={{
-                  maintainAspectRatio: true,
-                  aspectRatio: 1,
-                  responsive: true,
-                  scales: {
-                    y: {
-                      max: 1000000,
-                      ticks: {
-                        stepSize: 10000,
-                        callback: value => {
-                          return `${value.toLocaleString()}원`
-                        }
-                      },
-                      beginAtZero: true
-                    }
-                  },
-                  layout: {
-                    padding: {
-                      left: 0,
-                      top: 20,
-                      right: 0,
-                      bottom: 20
-                    }
-                  },
-                  plugins: {
-                    legend: {
-                      display: false
-                    }
-                  }
-                }}
-                data={data}
-              />
-            </BarWapper>
+            {monthlyHistories.length > 0 ? (
+              loading ? null : (
+                <Top3CategoryChart monthlyData={monthlyHistories} />
+              )
+            ) : (
+              <h4>데이터가 없습니다.</h4>
+            )}
           </div>
         </Box>
         <Box>
