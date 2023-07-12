@@ -4,6 +4,7 @@ import { WeekSummary,  DailyExpense } from '@/components';
 import { calculateWeekly } from '@/utils';
 import { useStore } from '@/store';
 import styled from 'styled-components';
+import { Calendar } from '@/types';
 
 export const Weekly = () => {
   const weeklyExpenses = useStore((state) => state.expensesData);
@@ -36,7 +37,7 @@ export const Weekly = () => {
 
   return (
     <Container>
-      {weeklyExpenses.map((weekExpenses, weekIndex) => (
+      {weeklyExpenses.map((weekExpenses: Calendar[], weekIndex: number) => (
         <>
           <WeekSummary
             key={weekIndex}
@@ -48,7 +49,7 @@ export const Weekly = () => {
             <DailyExpense
             dailyExpenses={weekExpenses}
             weekIndex={weekIndex}
-           />
+           />          
           )}
         </>
       ))}

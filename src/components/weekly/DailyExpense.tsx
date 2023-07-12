@@ -1,32 +1,31 @@
 import styled from 'styled-components';
 import { GoDotFill } from 'react-icons/go';
-import { Calendar } from '@/types';
+import { Calendar, ExpenseData } from '@/types';
 import { ToggleButton } from './ToggleButton';
 import { useStore } from '@/store';
 import { deleteExpense } from '@/apis/Expense';
-import { useState, useEffect } from 'react'
 
-export const DailyExpense = ({ dailyExpenses, weekIndex  }) => {
+interface DailyExpenseProps {
+  dailyExpenses: Calendar[];
+  weekIndex: number;
+}
+
+export const DailyExpense = ({ dailyExpenses, weekIndex }: DailyExpenseProps) => {
   const removeExpense = useStore((state) => state.removeExpense);
   const updateExpense = useStore((state) => state.updateExpense); 
-  const [dailyData, setDailyData] = useState(dailyExpenses);
-
-  useEffect(() => {
-    setDailyData(dailyExpenses);
-  }, [dailyExpenses]);
 
   const handleDeleteExpense = async (deletedIndex: number, expenseId: string) => {
       await deleteExpense(expenseId);
       removeExpense(weekIndex, deletedIndex);
   };
 
-  const handleUpdateExpense = async (updatedIndex: number, updatedExpense: Calendar) => {
+  const handleUpdateExpense = async (updatedIndex: number, updatedExpense: ExpenseData) => {
     await updateExpense(weekIndex, updatedIndex, updatedExpense);
   };
   
   return (
     <DailyWrapper>
-      {dailyData.map((expense: Calendar, index: number) => (
+      {dailyExpenses.map((expense: Calendar, index: number) => (
         <DailyContainer key={index}>
           <DateBox>
             <GoDotFill />
@@ -37,7 +36,7 @@ export const DailyExpense = ({ dailyExpenses, weekIndex  }) => {
 
           <FlexibleSpace />
 
-          <Amount>-{expense.amount.toLocaleString()}원</Amount>
+          <Amount>{expense.amount.toLocaleString()}원</Amount>
 
           <ToggleButton 
             index={index} 

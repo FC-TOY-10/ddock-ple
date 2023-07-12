@@ -1,21 +1,23 @@
 import { useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { Button, UpdateModal, DeleteModal } from "@/components/index";
+import { Calendar, ExpenseData } from "@/types";
 
-let activeToggleButton = null;
+type ToggleButtonProps = {
+  expense: Calendar;
+  index: number;
+  onDeleteExpense: (index: number, id: string) => void;
+  onUpdateExpense: (index: number, updatedExpense: ExpenseData) => void;
+};
 
-export const ToggleButton = ({ expense, index, onDeleteExpense, onUpdateExpense, weekIndex }) => {
+type ToggleButtonAction = (value: boolean) => void;
+
+let activeToggleButton: ToggleButtonAction | null = null;
+
+export const ToggleButton = ({ expense, index, onDeleteExpense, onUpdateExpense }:ToggleButtonProps) => {
   const [showButtons, setShowButtons] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  const openUpdateModal = () => {
-    setShowUpdateModal(true);
-  };
-
-  const closeUpdateModal = () => {
-    setShowUpdateModal(false);
-  };
 
   // 버튼의 표시 여부를 전환하는 함수
   const toggleVisibility = () => {
@@ -32,25 +34,16 @@ export const ToggleButton = ({ expense, index, onDeleteExpense, onUpdateExpense,
     });
   };
 
-  const openDeleteModal = () => {
-    setShowDeleteModal(true);
-  };
-
-  const closeDeleteModal = () => {
-    setShowDeleteModal(false);
-  };
-
   const handleDelete = () => {
     onDeleteExpense(index, expense._id);
-    closeDeleteModal();
+    setShowUpdateModal(false); 
   };
 
-  const handleUpdate = (updatedExpense) => { 
+  const handleUpdate = (updatedExpense: ExpenseData) => { 
     onUpdateExpense(index, updatedExpense);
-    closeUpdateModal();
+    setShowUpdateModal(false); 
   };
   
-
   return (
     <>
       {!showButtons && (
@@ -58,20 +51,20 @@ export const ToggleButton = ({ expense, index, onDeleteExpense, onUpdateExpense,
       )}
       {showButtons && (
         <div onClick={toggleVisibility}>
-          <Button text="수정" onClick={openUpdateModal} />
-          <Button text="삭제" secondary onClick={openDeleteModal}/>
+          <Button text="수정" onClick={() => setShowUpdateModal(true)} />
+          <Button text="삭제" secondary onClick={() => setShowDeleteModal(true)}/>
         </div>
       )}
       {showUpdateModal && (
         <UpdateModal 
-        closeModal={closeUpdateModal}
+        closeModal={() => setShowUpdateModal(false)}
         onUpdate={handleUpdate}
         expense={expense}
           />
       )}
        {showDeleteModal && (
         <DeleteModal
-          closeModal={closeDeleteModal}
+          closeModal={() => setShowDeleteModal(false)}
           onConfirm={handleDelete}
         />
       )}
