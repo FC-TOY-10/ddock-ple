@@ -59,7 +59,7 @@ export const WeeklyChart = React.memo(() => {
       )
       const prevTotal = prevSummary?.totalAmount ?? 0
       const currentTotal = currentSummary?.totalAmount ?? 0
-
+      console.log(prevTotal, currentTotal)
       setWeeklySummary({
         prevTotal: prevTotal,
         currentTotal: currentTotal
@@ -141,7 +141,7 @@ export const WeeklyChart = React.memo(() => {
         <Box>
           {/* 가장 큰 지출 항목 */}
           <div className="inner">
-            {weeklySummary.prevTotal && weeklySummary.currentTotal && (
+            {weeklySummary.prevTotal !== null && weeklySummary.currentTotal !== null && (
               <div className="compare">
                 <p>이번주는 지난주 대비</p>
                 <p>

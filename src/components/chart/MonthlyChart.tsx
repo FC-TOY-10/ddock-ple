@@ -30,7 +30,6 @@ export const MonthlyChart = React.memo(() => {
       {loading ? null : <MonthlyTotalCard monthlyData={monthlyHistories} />}
       <AnalyzeBox>
         <Box>
-          {/* 카테고리 별 분석 파이 */}
           <div className="inner">
             {monthlyHistories.length > 0 ? (
               loading ? null : (
@@ -42,7 +41,6 @@ export const MonthlyChart = React.memo(() => {
           </div>
         </Box>
         <Box>
-          {/* 가장 큰 지출 항목 */}
           <div className="inner">
             <p>이번주는 지난주 대비</p>
             <p>
