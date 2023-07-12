@@ -75,7 +75,10 @@ export const ChartCard = React.memo(({ weeklyDatas, loading }: ChartCardProps) =
     scales: {
       수입: {
         ticks: { stepSize: 5000 },
-        max: Math.ceil(Math.max(maxIncomePrice, maxExpendPrice) / 5000) * 5000
+        max: Math.ceil(Math.max(maxIncomePrice, maxExpendPrice) / 5000) * 5000,
+        grid: {
+          color: '#555555'
+        }
       },
       지출: {
         display: false,
@@ -84,6 +87,11 @@ export const ChartCard = React.memo(({ weeklyDatas, loading }: ChartCardProps) =
           drawOnChartArea: false
         },
         max: Math.ceil(Math.max(maxIncomePrice, maxExpendPrice) / 5000) * 5000
+      },
+      x: {
+        grid: {
+          color: '#555555'
+        }
       }
     }
   }

@@ -56,7 +56,7 @@ export const MonthlyTotalCard = React.memo(({ monthlyData }: MonthlyTotalCardPro
         <span>지출 {expendTotalPrice.toLocaleString()} 원</span>
       </p>
       <ChartWrapper>
-        {monthlyData ? <h4>월간 자산 데이터가 없습니다.</h4> : <Pie data={data} />}
+        {monthlyData ? <Pie data={data} /> : <h4>월간 자산 데이터가 없습니다.</h4>}
       </ChartWrapper>
     </Card>
   )

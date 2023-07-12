@@ -74,7 +74,15 @@ export const Top3CategoryChart = React.memo(({ monthlyData }: Top3CategroyChartP
             stepSize: maxPrice / 5,
             callback: (value: unknown) => `${(value as number).toLocaleString()}원`
           },
-          beginAtZero: true
+          beginAtZero: true,
+          grid: {
+            color: '#555555'
+          }
+        },
+        x: {
+          grid: {
+            color: '#555555'
+          }
         }
       },
       layout: {

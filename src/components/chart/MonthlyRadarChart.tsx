@@ -1,36 +1,80 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { ICalendarResponse } from 'types/index'
 import { chartCategory } from 'constants/index'
+import { calculateExpend } from 'utils/index'
 import {
   Chart as ChartJS,
   RadialLinearScale,
   PointElement,
   LineElement,
   Filler,
-  Tooltip,
-  Legend
+  Tooltip
 } from 'chart.js'
 import { Radar } from 'react-chartjs-2'
 
-ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend)
+ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip)
 
 type MonthlyRadarChartProps = {
   monthlyData: ICalendarResponse[]
 }
 
 export const MonthlyRadarChart = ({ monthlyData }: MonthlyRadarChartProps) => {
-  const data = {
-    labels: ['Thing 1', 'Thing 2', 'Thing 3', 'Thing 4', 'Thing 5', 'Thing 6'],
-    datasets: [
-      {
-        label: '# of Votes',
-        data: [2, 9, 3, 5, 2, 3],
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1
-      }
-    ]
-  }
+  const categories = chartCategory.map(category => category.category)
 
-  return <Radar data={data} />
+  const chartData = useMemo(() => {
+    const totalExpendListByCategory = categories.map(category =>
+      calculateExpend(monthlyData.filter(data => data.category === category))
+    )
+    console.log(totalExpendListByCategory)
+    return {
+      labels: categories,
+      datasets: [
+        {
+          label: '총 지출 금액',
+          data: totalExpendListByCategory,
+          backgroundColor: 'rgba(19, 199, 28, 0.2)',
+          borderColor: 'rgba(19, 199, 28, 1)',
+          borderWidth: 1
+        }
+      ]
+    }
+  }, [monthlyData])
+
+  return (
+    <>
+      <h3>카테고리별 월 지출 분석</h3>
+      <Radar
+        data={chartData}
+        options={{
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            r: {
+              ticks: {
+                display: false,
+                stepSize: Math.max(...chartData.datasets[0].data) / 5
+              },
+              grid: {
+                color: '#555555'
+              },
+              angleLines: {
+                color: '#555555'
+              }
+            }
+          },
+          layout: {
+            padding: {
+              left: 20,
+              top: 20,
+              right: 20,
+              bottom: 20
+            }
+          }
+        }}
+      />
+    </>
+  )
 }

@@ -43,7 +43,7 @@ export const MonthlyChart = React.memo(() => {
         </Box>
         <Box>
           <div className="inner">
-            {monthlyHistories.length < 0 ? (
+            {monthlyHistories.length > 0 ? (
               loading ? null : (
                 <MonthlyRadarChart monthlyData={monthlyHistories} />
               )
