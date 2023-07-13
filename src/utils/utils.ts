@@ -7,7 +7,7 @@ type ExpensesData = {
 export interface WeeklyExpenses extends Array<Calendar[]> {}
 
 // 입력된 지출 데이터를 주간 지출 데이터로 계산하는 함수
-export const calculateWeeklyExpenses = (expensesData:ExpensesData) => {
+export const calculateWeekly = (expensesData:ExpensesData) => {
   let weeklyExpenses:WeeklyExpenses = [];
 
   // 주수를 계산하는 함수

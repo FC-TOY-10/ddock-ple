@@ -2,7 +2,14 @@ import { AiOutlineMenu } from "react-icons/ai";
 import styled from 'styled-components';
 import { Calendar } from "@/types";
 
-export const WeekSummary = ({ weekExpenses, index, onClick }) => {
+interface WeekSummaryProps {
+  weekExpenses: Calendar[];
+  index: number;
+  onClick: () => void;
+}
+
+export const WeekSummary = ({ weekExpenses, index, onClick }:WeekSummaryProps) => {
+  
   // 주 지출 총액 계산
   const totalAmount = weekExpenses.reduce((acc:number, expense:Calendar) => acc + expense.amount, 0);
 
@@ -20,7 +27,7 @@ export const WeekSummary = ({ weekExpenses, index, onClick }) => {
     <WeekContainer key={index} onClick={onClick}>
       <AiOutlineMenu />
       <WeekTitle>{`${weekStartDay} ~ ${weekEndDay} (${index + 1}주차)`}</WeekTitle>
-      <TotalAmount>-{totalAmount.toLocaleString()}원</TotalAmount>
+      <TotalAmount>{totalAmount.toLocaleString()}원</TotalAmount>
     </WeekContainer>
   );
 };
