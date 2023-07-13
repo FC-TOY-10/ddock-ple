@@ -12,3 +12,17 @@ export const getWeeklyData = async (params: IRequestByDate) => {
     return error as AxiosError
   }
 }
+
+// 주별 소비 조회
+export const getWeeklySummary = async () => {
+  try {
+    const params = {
+      period: 'weekly',
+      userId: import.meta.env.VITE_USER_ID
+    }
+    const response = await apiInstance.get('/expenses/summary', { params })
+    return response.data
+  } catch (error) {
+    return error as AxiosError
+  }
+}

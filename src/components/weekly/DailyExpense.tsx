@@ -2,36 +2,33 @@ import styled from 'styled-components';
 import { GoDotFill } from 'react-icons/go';
 import { Calendar } from '@/types';
 import { ToggleButton } from './ToggleButton';
-import { useState, useEffect } from 'react';
 
-export const DailyExpense = ({ dailyExpenses, weekIndex, onDeleteExpense  }) => {
-  const [dailyExpense, setDailyExpense] = useState([]);
+interface DailyExpenseProps {
+  dailyExpenses: Calendar[];
+  weekIndex: number;
+}
 
-  useEffect(() => {
-    setDailyExpense(dailyExpenses);
-  }, [dailyExpenses]);
-
-  const handleDeleteExpense = (deletedIndex: number, expenseId: number) => {
-    onDeleteExpense(weekIndex, deletedIndex, expenseId);
-  };
+export const DailyExpense = ({ dailyExpenses, weekIndex }: DailyExpenseProps) => {
   
-
   return (
     <DailyWrapper>
-      {dailyExpense.map((expense: Calendar, index: number) => (
+      {/* 각각의 dailyExpenses를 렌더링 */}
+      {dailyExpenses.map((expense: Calendar, index: number) => (
         <DailyContainer key={index}>
+          {/* 날짜 표시 */}
           <DateBox>
             <GoDotFill />
             {new Date(expense.date).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}
           </DateBox>
-
+          {/* 카테고리 */}
           <Category>{expense.category}</Category>
-
+           {/* 칸 나누기 */}
           <FlexibleSpace />
-
-          <Amount>-{expense.amount.toLocaleString()}원</Amount>
-
-          <ToggleButton index={index} expense={expense} onDeleteExpense={handleDeleteExpense}/>
+          {/* 금액 */}
+          <Amount>{expense.amount.toLocaleString()}원</Amount>
+          {/* 수정 및 삭제 버튼 */}
+          <ToggleButton expense={expense} weekIndex={weekIndex} index={index} />
+            
         </DailyContainer>
       ))}
     </DailyWrapper>

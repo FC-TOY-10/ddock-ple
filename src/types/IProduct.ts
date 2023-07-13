@@ -7,7 +7,6 @@ export interface ExpenseData {
 
 export interface Calendar extends ExpenseData {
   _id: string;
-  __v: number;
 }
 
 export interface TotalAmount {

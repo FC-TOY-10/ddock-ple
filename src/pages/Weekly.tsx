@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
-import { fetchCalendar, deleteExpense } from '@/apis/Expense';
+import { fetchCalendar } from '@/apis/Expense';
 import { WeekSummary,  DailyExpense } from '@/components';
-import { calculateWeeklyExpenses, WeeklyExpenses } from '@/utils';
+import { calculateWeekly } from '@/utils';
+import { useStore } from '@/store';
 import styled from 'styled-components';
+import { Calendar } from '@/types';
 
 export const Weekly = () => {
-  const [weeklyExpenses, setWeeklyExpenses] = useState<WeeklyExpenses>([]);
+  const weeklyExpenses = useStore((state) => state.expensesData);
+  const setWeeklyExpenses = useStore((state) => state.setExpensesData);
   const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
 
   useEffect(() => {
@@ -13,10 +16,10 @@ export const Weekly = () => {
       const currentDate = new Date();
       const currentYear = currentDate.getFullYear();
       const currentMonth = currentDate.getMonth() + 1;
-      
+      // 현재 연도와 월에 해당하는 지출 데이터
       const expensesData = await fetchCalendar(currentYear, currentMonth);
       // 가져온 지출 데이터를 주간 지출 데이터로 변환
-      setWeeklyExpenses(calculateWeeklyExpenses(expensesData)); 
+      setWeeklyExpenses(calculateWeekly(expensesData)); 
     };
 
     fetchData();
@@ -32,34 +35,23 @@ export const Weekly = () => {
     }
   };
 
-  //데이터 수정시 렌더링되는 함수. 상태 관리 라이브러리 사용하면 없앨거임
-  const handleDeleteExpense = async (weekIndex: number, expenseIndex: number, expenseId: string) => {
-    await deleteExpense(expenseId);
-    setWeeklyExpenses((prevWeeklyExpenses) =>
-      prevWeeklyExpenses.map((weekExpenses, index) =>
-        index === weekIndex
-          ? weekExpenses.filter((_, index) => index !== expenseIndex)
-          : weekExpenses
-      )
-    );
-  }
-
   return (
     <Container>
-      {weeklyExpenses.map((weekExpenses, weekIndex) => (
+      {weeklyExpenses.map((weekExpenses: Calendar[], weekIndex: number) => (
         <>
+          {/* 주간 요약 정보 */}
           <WeekSummary
             key={weekIndex}
             weekExpenses={weekExpenses}
             index={weekIndex}
             onClick={() => handleWeekClick(weekIndex)}
           />
+           {/* 선택된 주의 일별 지출 정보 */}
           {selectedWeek === weekIndex && (
             <DailyExpense
             dailyExpenses={weekExpenses}
             weekIndex={weekIndex}
-            onDeleteExpense={handleDeleteExpense}
-           />
+           />          
           )}
         </>
       ))}

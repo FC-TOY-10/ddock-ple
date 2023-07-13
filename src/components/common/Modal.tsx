@@ -1,9 +1,15 @@
 import styled from 'styled-components';
+import { ReactNode } from 'react';
 
-export const Modal = ({ children, closeModal }) => {
+interface ModalProps {
+  children: ReactNode;
+  closeModal: () => void;
+}
+
+export const Modal = ({ children, closeModal }: ModalProps) => {
 
   //모달 외부 클릭시 닫힘
-  const handleOutsideClick = (e) => {
+  const handleOutsideClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       closeModal();
     }
