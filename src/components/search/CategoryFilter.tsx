@@ -1,43 +1,43 @@
-import moment from 'moment'
-import React, { useMemo, useState } from 'react'
-import { chartCategory } from 'constants/index'
+import React, { useState } from 'react'
+
 import { CategoryFilterModal } from 'components/index'
 import { styled } from 'styled-components'
 
-const categories = chartCategory.map(c => c.category)
-export const CategoryFilter = React.memo(() => {
-  const [selectedCategories, setSelectedCategories] = useState(categories)
-  const [isOpen, setIsOpen] = useState(false)
-  const openModalHandler = () => {
-    setIsOpen(!isOpen)
-  }
+type CategoryFilterProps = {
+  selectedCategories: string[]
+  onChangeSelectedCategories: (categories: string[]) => void
+}
 
-  const onChangeSelectedCategories = (categories: string[]) => {
-    setSelectedCategories(categories)
-  }
+export const CategoryFilter = React.memo(
+  ({ selectedCategories, onChangeSelectedCategories }: CategoryFilterProps) => {
+    const [isOpen, setIsOpen] = useState(false)
+    const openModalHandler = () => {
+      setIsOpen(!isOpen)
+    }
 
-  return (
-    <div>
-      <CategoryWrapper>
-        <p>카테고리</p>
-        {selectedCategories.length === categories.length ? (
-          <CategoryButton onClick={() => setIsOpen(true)}>전체 카테고리</CategoryButton>
-        ) : (
-          <CategoryButton onClick={() => setIsOpen(true)}>
-            {selectedCategories.join(' / ')}
-          </CategoryButton>
-        )}
-      </CategoryWrapper>
-      {isOpen ? (
-        <CategoryFilterModal
-          selectedCategories={selectedCategories}
-          onChangeSelectedCategories={onChangeSelectedCategories}
-          onCloseModal={openModalHandler}
-        />
-      ) : null}
-    </div>
-  )
-})
+    return (
+      <div>
+        <CategoryWrapper>
+          <p>카테고리</p>
+          {selectedCategories.length === 7 ? (
+            <CategoryButton onClick={() => setIsOpen(true)}>전체 카테고리</CategoryButton>
+          ) : (
+            <CategoryButton onClick={() => setIsOpen(true)}>
+              {selectedCategories.join(' / ')}
+            </CategoryButton>
+          )}
+        </CategoryWrapper>
+        {isOpen ? (
+          <CategoryFilterModal
+            selectedCategories={selectedCategories}
+            onChangeSelectedCategories={onChangeSelectedCategories}
+            onCloseModal={openModalHandler}
+          />
+        ) : null}
+      </div>
+    )
+  }
+)
 
 const CategoryWrapper = styled.div`
   display: flex;
