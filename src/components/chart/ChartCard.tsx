@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useMemo, useState } from 'react'
+import { IWeeklyHistory } from 'types/index'
+
 import { styled } from 'styled-components'
 import {
   Chart as ChartJS,
@@ -15,32 +17,12 @@ import 'moment/locale/ko'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend)
 
-export const options = {
-  responsive: true,
-  interaction: {
-    mode: 'index' as const,
-    intersect: false
-  },
-  stacked: false,
-  plugins: {},
-  scales: {
-    y: {
-      type: 'linear' as const,
-      display: true,
-      position: 'left' as const
-    },
-    y1: {
-      type: 'linear' as const,
-      display: false,
-      position: 'right' as const,
-      grid: {
-        drawOnChartArea: false
-      }
-    }
-  }
+type ChartCardProps = {
+  weeklyDatas: IWeeklyHistory[]
+  loading: boolean
 }
 
-export const ChartCard = React.memo(() => {
+export const ChartCard = React.memo(({ weeklyDatas, loading }: ChartCardProps) => {
   const startDay = moment().startOf('week')
 
   const weekOfMonth = (m: Moment) => m.week() - moment(m).startOf('month').week() + 1
@@ -56,36 +38,101 @@ export const ChartCard = React.memo(() => {
     `${startDay.day(6).format('MM-DD').toString()}`
   ]
 
-  // 임시 데이터
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: '수입',
-        data: labels.map(() => Math.random() * 100000),
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        yAxisID: 'y'
+  const expendTotalList = useMemo(() => {
+    return weeklyDatas.map(data =>
+      data.histories.reduce((acc, cur) => {
+        if (cur.amount < 0) {
+          return acc + -cur.amount
+        } else {
+          return acc
+        }
+      }, 0)
+    )
+  }, [weeklyDatas])
+
+  const incomeTotalList = useMemo(() => {
+    return weeklyDatas.map(data => {
+      return data.histories.reduce((acc, cur) => {
+        if (cur.amount > 0) {
+          return acc + cur.amount
+        } else {
+          return acc
+        }
+      }, 0)
+    })
+  }, [weeklyDatas])
+
+  const maxIncomePrice = useMemo(() => Math.max(...incomeTotalList), [incomeTotalList])
+  const maxExpendPrice = useMemo(() => Math.max(...expendTotalList), [expendTotalList])
+
+  const options = {
+    redraw: true,
+    responsive: true,
+    interaction: {
+      mode: 'index' as const,
+      intersect: false
+    },
+    scales: {
+      수입: {
+        ticks: { stepSize: 5000 },
+        max: Math.ceil(Math.max(maxIncomePrice, maxExpendPrice) / 5000) * 5000,
+        grid: {
+          color: '#555555'
+        }
       },
-      {
-        label: '지출',
-        data: labels.map(() => Math.random() * 100000),
-        borderColor: 'rgb(53, 162, 235)',
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
-        yAxisID: 'y1'
+      지출: {
+        display: false,
+        ticks: { stepSize: 5000 },
+        grid: {
+          drawOnChartArea: false
+        },
+        max: Math.ceil(Math.max(maxIncomePrice, maxExpendPrice) / 5000) * 5000
+      },
+      x: {
+        grid: {
+          color: '#555555'
+        }
       }
-    ]
+    }
   }
+
+  const data = useMemo(() => {
+    return {
+      labels,
+      datasets: [
+        {
+          label: '수입',
+          data: incomeTotalList,
+          borderColor: 'rgb(255, 19, 70)',
+          backgroundColor: 'rgba(255, 19, 70, 0.6)',
+          yAxisID: '수입'
+        },
+        {
+          label: '지출',
+          data: expendTotalList,
+          borderColor: 'rgb(23, 134, 208)',
+          backgroundColor: 'rgba(23, 134, 208, 0.6)',
+          yAxisID: '지출'
+        }
+      ]
+    }
+  }, [expendTotalList, incomeTotalList])
 
   return (
     <Card>
-      <h4>{`길동님의 ${nowDate.format('M월 ')} ${weekOfMonth(nowDate)}주차`}</h4>
-      <p className="total">수입 200,000 원 지출 120,000 원</p>
-
-      <Line
-        options={options}
-        data={data}
-      />
+      <h4>{`Team10님의 ${nowDate.format('M월 ')} ${weekOfMonth(nowDate)}주차`}</h4>
+      <p className="total">
+        <span>수입 {incomeTotalList.reduce((acc, cur) => (acc += cur), 0).toLocaleString()}원</span>
+        <span>
+          지출 {expendTotalList.reduce((acc, cur) => (acc += cur), 0).toLocaleString()} 원
+        </span>
+      </p>
+      {loading ? null : (
+        <Line
+          options={options}
+          data={data}
+        />
+      )}
     </Card>
   )
 })
@@ -107,5 +154,7 @@ const Card = styled.div`
     font-weight: 700;
     color: var(--color-white);
     margin-bottom: 40px;
+    display: flex;
+    gap: 20px;
   }
 `
