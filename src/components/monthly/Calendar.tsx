@@ -525,15 +525,6 @@ const ListboxCenter = styled.div`
     border: none;
     font-size: 15px;
 
-     input {
-      width: 70%;
-      background-color: #53c7a1;
-      color:#ffff;
-      font-size: 15px;
-      border: none;
-      outline: none;
-    } 
-
     .editControls{
       position: absolute;
       top: 5px;
@@ -566,16 +557,25 @@ const ListboxLeft = styled.div`
   overflow-y: 230px;
   max-height: 200px;
   border-radius: 10px;
+
+  input {
+    width: 70%;
+    background-color: #53c7a1;
+    color:#ffff;
+    font-size: 15px;
+    border: none;
+    outline: none;
+  } 
 `
 const InnerList = styled.div`
-width: 93%;
-padding: 5px;
-height: 35px;
-margin-top: 5px;
-margin-left: 10px;
-border-bottom: 1px solid #F3EFE0;
-position: relative;
-color: white;
+  width: 93%;
+  padding: 5px;
+  height: 35px;
+  margin-top: 5px;
+  margin-left: 10px;
+  border-bottom: 1px solid #F3EFE0;
+  position: relative;
+  color: white;
 
 .penIcon{
   position: absolute;
