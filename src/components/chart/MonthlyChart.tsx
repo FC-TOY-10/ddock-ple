@@ -28,7 +28,7 @@ export const MonthlyChart = React.memo(() => {
 
   return (
     <Container>
-      <ChartCard />
+      {/* <ChartCard /> */}
       <AnalyzeBox>
         <Box>
           {/* 카테고리 별 분석 파이 */}
