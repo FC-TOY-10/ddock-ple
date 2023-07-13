@@ -1,16 +1,13 @@
 import { useState } from 'react'
 import { chartCategory } from 'constants/index'
 import { DateFilterTab, CategoryFilter } from 'components/index'
+import { ExpenseData, ISearchQuery } from 'types/index'
+import { searchByDateCategory } from 'apis/index'
+
 import { styled } from 'styled-components'
 import { AiOutlineSearch } from 'react-icons/ai'
 
 const categories = chartCategory.map(c => c.category)
-
-interface ISearchQuery {
-  startDate: string | null
-  endDate: string | null
-  categories: string[]
-}
 
 export const Search = () => {
   const [searchQuery, setSearchQuery] = useState<ISearchQuery>({
@@ -19,6 +16,8 @@ export const Search = () => {
     categories: categories
   })
   const [selectedCategories, setSelectedCategories] = useState(categories)
+  const [loading, setLoading] = useState(false)
+  const [searchResult, setSearchResult] = useState<ExpenseData[] | null>(null)
 
   const onSelectDateFilter = (startDate: string, endDate: string) => {
     setSearchQuery({ startDate: startDate, endDate: endDate, categories: selectedCategories })
@@ -31,7 +30,19 @@ export const Search = () => {
   }
 
   const onClickSearch = () => {
-    console.log(searchQuery)
+    setLoading(true)
+    searchByDateCategory(searchQuery)
+      .then(
+        res => {
+          setSearchResult(res as ExpenseData[])
+        },
+        error => {
+          console.log(error)
+        }
+      )
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   return (
@@ -48,6 +59,15 @@ export const Search = () => {
           검색
         </SearchButton>
       </ButtonWrapper>
+
+      {loading && <div>검색중....</div>}
+      {searchResult ? (
+        searchResult.length !== 0 ? (
+          <div>{searchResult.length}</div>
+        ) : (
+          <div>검색 결과가 없습니다.</div>
+        )
+      ) : null}
     </SearchWrapper>
   )
 }
