@@ -1,7 +1,12 @@
 import { Modal } from '../common';
 import styled from 'styled-components';
 
-export const DeleteModal = ({ closeModal, onConfirm }) => {
+type DeleteModalProps = {
+  closeModal: () => void;
+  onConfirm: () => void;
+};
+
+export const DeleteModal: React.FC<DeleteModalProps>  = ({ closeModal, onConfirm }) => {
   return (
     <Modal closeModal={closeModal}>
       <p>정말로 지우시겠습니까?</p>

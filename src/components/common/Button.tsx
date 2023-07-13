@@ -1,5 +1,15 @@
 import styled, { css } from 'styled-components';
 
+interface ButtonProps {
+  text: string | JSX.Element;
+  secondary?: boolean;
+  value?: string;
+  onClick?: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void | Promise<void>;
+  disabled?: boolean;
+  submit?: boolean;
+}
 
 export const Button = ({
   text,
@@ -8,7 +18,7 @@ export const Button = ({
   onClick,
   value,
   submit,
-}) => {
+}: ButtonProps) => {
   return (
     <StyledButton
       type={submit ? 'submit' : 'button'}

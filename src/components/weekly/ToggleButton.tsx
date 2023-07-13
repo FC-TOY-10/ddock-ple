@@ -1,21 +1,27 @@
 import { useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { Button, UpdateModal, DeleteModal } from "@/components/index";
+import { Calendar, ExpenseData } from "@/types";
 
-let activeToggleButton = null;
+import { useStore } from "@/store";
 
-export const ToggleButton = ({ expense, index, onDeleteExpense  }) => {
+type ToggleButtonProps = {
+  expense: Calendar;
+  index: number;
+  weekIndex: number;
+};
+
+type ToggleButtonAction = (value: boolean) => void;
+
+let activeToggleButton: ToggleButtonAction | null = null;
+
+export const ToggleButton = ({ expense, index, weekIndex }:ToggleButtonProps) => {
   const [showButtons, setShowButtons] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const openUpdateModal = () => {
-    setShowUpdateModal(true);
-  };
-
-  const closeUpdateModal = () => {
-    setShowUpdateModal(false);
-  };
+  const removeExpense = useStore((state) => state.removeExpense);
+  const updateExpense = useStore((state) => state.updateExpense); 
 
   // 버튼의 표시 여부를 전환하는 함수
   const toggleVisibility = () => {
@@ -32,40 +38,43 @@ export const ToggleButton = ({ expense, index, onDeleteExpense  }) => {
     });
   };
 
-  const openDeleteModal = () => {
-    setShowDeleteModal(true);
-  };
-
-  const closeDeleteModal = () => {
-    setShowDeleteModal(false);
-  };
-
+  //삭제 함수
   const handleDelete = () => {
-    onDeleteExpense(index, expense._id);
-    closeDeleteModal();
+    removeExpense(weekIndex, index, expense._id);
+    setShowDeleteModal(false); 
+  };
+
+  //수정 함수
+  const handleUpdate = (updatedExpense: ExpenseData) => { 
+    updateExpense(weekIndex, index, updatedExpense, expense._id);
+    setShowUpdateModal(false); 
   };
   
-
   return (
     <>
+      {/* 토글 버튼 */}
       {!showButtons && (
         <AiOutlinePlus tabIndex={0} onClick={toggleVisibility} />
       )}
+       {/* 수정 및 삭제 버튼*/}
       {showButtons && (
         <div onClick={toggleVisibility}>
-          <Button text="수정" onClick={openUpdateModal} />
-          <Button text="삭제" secondary onClick={openDeleteModal}/>
+          <Button text="수정" onClick={() => setShowUpdateModal(true)} />
+          <Button text="삭제" secondary onClick={() => setShowDeleteModal(true)}/>
         </div>
       )}
+      {/* 수정 모달 창 */}
       {showUpdateModal && (
         <UpdateModal 
-          closeModal={closeUpdateModal} 
-          expense={expense} 
+        closeModal={() => setShowUpdateModal(false)}
+        onUpdate={handleUpdate}
+        expense={expense}
           />
       )}
-       {showDeleteModal && (
+      {/* 삭제 확인 모달 창 */}
+      {showDeleteModal && (
         <DeleteModal
-          closeModal={closeDeleteModal}
+          closeModal={() => setShowDeleteModal(false)}
           onConfirm={handleDelete}
         />
       )}

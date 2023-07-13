@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import { HomeModal, Spinner, ExpenseForm } from 'components/index';
+import { HomeModal, Spinner } from 'components/index';
 import { fetchExpense } from '@/apis/Expense';
-import { TotalAmount, ExpenseData } from '@/types';
+import { TotalAmount } from '@/types';
 
 //숫자를 문자로 변환. 1000을 1,000 으로 출력
 const formatDate = (value: number) => value.toLocaleString();
@@ -40,16 +40,9 @@ export const Home = () => {
     updateProgress(latestTotalAmount);
   };
 
-  // 지출 추가 이벤트 처리 함수
-  const handleAddExpense = (expense: ExpenseData) => {
-    const newTotalAmount = totalAmount + expense.amount;
-    setTotalAmount(newTotalAmount);
-    updateProgress(newTotalAmount);
-  };
-
   // spinner 계산용 함수
-  const updateProgress = (newTotalAmount: number) => {
-    const percent = (newTotalAmount / goal) * 100;
+  const updateProgress = (latestTotalAmount: number) => {
+    const percent = (latestTotalAmount / goal) * 100;
     setProgress(parseFloat(Math.min(percent, 100).toFixed(2)));
   };
 
@@ -70,7 +63,6 @@ export const Home = () => {
       {showModal && (
         <HomeModal setGoal={handleSetGoal} closeModal={() => setShowModal(false)} />
       )}
-      <ExpenseForm onAddExpense={handleAddExpense} />
     </Container>
   );
 };
