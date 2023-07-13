@@ -114,34 +114,39 @@ export const WeeklyChart = React.memo(() => {
       />
       <AnalyzeBox>
         <Box>
-          {/* 카테고리 별 분석 파이 */}
           <div className="inner">
-            <h3>카테고리 별 지출 횟수</h3>
+            {categoriesData.datasets[0].data.find(num => num > 0) ? (
+              <>
+                <h3>카테고리 별 지출 횟수</h3>
 
-            <Doughnut
-              data={categoriesData}
-              options={{
-                plugins: {
-                  legend: {
-                    display: false
-                  }
-                },
-                layout: {
-                  padding: {
-                    left: 20,
-                    top: 20,
-                    right: 20,
-                    bottom: 20
-                  }
-                }
-              }}
-            />
+                <Doughnut
+                  data={categoriesData}
+                  options={{
+                    plugins: {
+                      legend: {
+                        display: false
+                      }
+                    },
+                    layout: {
+                      padding: {
+                        left: 20,
+                        top: 20,
+                        right: 20,
+                        bottom: 20
+                      }
+                    }
+                  }}
+                />
+              </>
+            ) : (
+              <h4>데이터가 없습니다.</h4>
+            )}
           </div>
         </Box>
         <Box>
           {/* 가장 큰 지출 항목 */}
           <div className="inner">
-            {weeklySummary.prevTotal && weeklySummary.currentTotal && (
+            {weeklySummary.prevTotal !== null && weeklySummary.currentTotal !== null && (
               <div className="compare">
                 <p>이번주는 지난주 대비</p>
                 <p>
@@ -203,6 +208,14 @@ const Box = styled.div`
 
     h3 {
       text-align: center;
+    }
+
+    h4 {
+      font-size: 20px;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     p {
