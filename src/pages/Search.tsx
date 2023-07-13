@@ -1,5 +1,5 @@
 import React from 'react'
-import { DateFilterTab } from 'components/index'
+import { DateFilterTab, CategoryFilter } from 'components/index'
 import { styled } from 'styled-components'
 
 export const Search = () => {
@@ -11,6 +11,7 @@ export const Search = () => {
     <SearchWrapper>
       <h1>검색</h1>
       <DateFilterTab onSelectDateFilter={onSelectDateFilter} />
+      <CategoryFilter />
     </SearchWrapper>
   )
 }
