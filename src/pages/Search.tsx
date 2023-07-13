@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { chartCategory } from 'constants/index'
-import { DateFilterTab, CategoryFilter } from 'components/index'
+import { DateFilterTab, CategoryFilter, SearchResult } from 'components/index'
 import { ExpenseData, ISearchQuery } from 'types/index'
 import { searchByDateCategory } from 'apis/index'
 
@@ -63,7 +63,7 @@ export const Search = () => {
       {loading && <div>검색중....</div>}
       {searchResult ? (
         searchResult.length !== 0 ? (
-          <div>{searchResult.length}</div>
+          <SearchResult results={searchResult} />
         ) : (
           <div>검색 결과가 없습니다.</div>
         )
