@@ -20,10 +20,12 @@ export const Search = () => {
   const [searchResult, setSearchResult] = useState<ExpenseData[] | null>(null)
 
   const onSelectDateFilter = (startDate: string, endDate: string) => {
+    setSearchResult(null)
     setSearchQuery({ startDate: startDate, endDate: endDate, categories: selectedCategories })
   }
 
   const onChangeSelectedCategories = (categories: string[]) => {
+    setSearchResult(null)
     setSelectedCategories(categories)
     const { startDate, endDate } = searchQuery
     setSearchQuery({ startDate: startDate, endDate: endDate, categories: categories })

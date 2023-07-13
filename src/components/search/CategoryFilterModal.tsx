@@ -35,6 +35,10 @@ export const CategoryFilterModal = React.memo(
       if (target.checked) {
         setSelected(new Set([...selected, target.id]))
       } else {
+        if (selected.size === 1) {
+          alert('카테고리는 1개 이상 필수입니다!')
+          return
+        }
         setSelected(new Set(Array.from(selected).filter(sc => sc !== target.id)))
       }
     }
