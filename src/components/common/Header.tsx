@@ -1,9 +1,10 @@
 import { styled } from 'styled-components'
+import { Logout } from '@/components'
 
 export const Header = () => {
   return (
     <HeaderContainer>
-      <h1>Header Title</h1>
+      <Logout/>
     </HeaderContainer>
   )
 }

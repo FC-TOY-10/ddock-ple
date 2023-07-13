@@ -1,23 +1,23 @@
 import { Route, Routes } from 'react-router-dom'
-import { Layout, Layout2 } from 'components/index'
-import { Home, Weekly, Chart, Monthly } from 'pages/index'
+import { Layout, Layout2, AuthGuard } from 'components/index'
+import { HomePage, WeeklyPage, Chart, Monthly, LoginPage } from 'pages/index'
+
 
 export const App = () => {
   return (
     <Routes>
       <Route
-        path="/"
-        element={<Layout2 />}>
-        <Route
-          index
-          element={<Home />}
-        />
+        path="/login"
+        element={<Layout />}>
+      <Route
+        index
+        element={<LoginPage />}/>
       </Route>
 
-      <Route element={<Layout2 />}>
+      <Route element={<AuthGuard><Layout2 /></AuthGuard>}>
         <Route
           path="/"
-          element={<Home />}
+          element={<HomePage />}
         />
         <Route
           path="/calendar"
@@ -29,7 +29,7 @@ export const App = () => {
         />
         <Route
           path="/weekly"
-          element={<Weekly />}
+          element={<WeeklyPage />}
         />
       </Route>
     </Routes>

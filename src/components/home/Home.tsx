@@ -4,9 +4,6 @@ import { HomeModal, Spinner } from 'components/index';
 import { fetchExpense } from '@/apis/Expense';
 import { TotalAmount } from '@/types';
 
-//숫자를 문자로 변환. 1000을 1,000 으로 출력
-const formatDate = (value: number) => value.toLocaleString();
-
 // 로컬 스토리지에서 목표 금액을 가져옴
 const useSavedGoal = () => {
   const storedGoal = localStorage.getItem('goal');
@@ -58,7 +55,7 @@ export const Home = () => {
       <Title>똑플</Title>
       <Line />
       <SubTitle>이번 달 소비</SubTitle>
-      <Spinner progress={progress} text={totalAmount ? formatDate(totalAmount) : '0'} />
+      <Spinner progress={progress} text={totalAmount ? totalAmount.toLocaleString() : '0'} />
       <Button onClick={() => setShowModal(true)}>소비계산 설정</Button>
       {showModal && (
         <HomeModal setGoal={handleSetGoal} closeModal={() => setShowModal(false)} />
