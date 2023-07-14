@@ -1,5 +1,5 @@
 import { Modal } from "../common/Modal";
-import styled from 'styled-components';
+import { Input } from '@/components'
 
 export const HomeModal = ({ setGoal, closeModal }) => {
 
@@ -21,10 +21,3 @@ export const HomeModal = ({ setGoal, closeModal }) => {
     </Modal>
   );
 };
-
-const Input = styled.input`
-  padding: 8px;
-  margin-top: 10px;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-`;
