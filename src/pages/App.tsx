@@ -1,6 +1,8 @@
 import { Route, Routes } from 'react-router-dom'
 import { Layout, Layout2, AuthGuard } from 'components/index'
+
 import { HomePage, WeeklyPage, Chart, Monthly, LoginPage, Search } from 'pages/index'
+import { SignUp } from 'components/index'
 
 export const App = () => {
   return (
@@ -10,8 +12,12 @@ export const App = () => {
         element={<Layout />}>
         <Route
           index
-          element={<LoginPage />}
-        />
+
+          element={<LoginPage />}/>
+        <Route
+          path="signup"
+          element={<SignUp />}/>
+
       </Route>
 
       <Route

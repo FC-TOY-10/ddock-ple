@@ -5,7 +5,7 @@ interface ButtonProps {
   secondary?: boolean;
   value?: string;
   onClick?: (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => void | Promise<void>;
   disabled?: boolean;
   submit?: boolean;

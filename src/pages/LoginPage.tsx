@@ -1,4 +1,4 @@
-import { Login } from 'components/index'
+import { Login, SignUp } from "@/components";
 
 export const LoginPage = () => {
   return (
