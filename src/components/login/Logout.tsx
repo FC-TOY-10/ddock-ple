@@ -1,30 +1,30 @@
-import { styled } from 'styled-components';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getAuth, signOut } from 'firebase/auth';
+import { styled } from 'styled-components'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { getAuth, signOut } from 'firebase/auth'
 
 export const Logout = () => {
-  const auth = getAuth();
-  const navigate = useNavigate();
+  const auth = getAuth()
+  const navigate = useNavigate()
 
   const initialUserData = localStorage.getItem('userData')
     ? JSON.parse(localStorage.getItem('userData') || '{}')
-    : {};
+    : {}
 
-  const [userData, setUserData] = useState(initialUserData);
+  const [userData, setUserData] = useState(initialUserData)
 
   useEffect(() => {
     if (!userData.displayName) {
-      setUserData(JSON.parse(localStorage.getItem('userData') || '{}'));
+      setUserData(JSON.parse(localStorage.getItem('userData') || '{}'))
     }
-  }, []);
+  }, [])
 
   const handleLogOut = () => {
-    signOut(auth);
-    setUserData({});
-    localStorage.removeItem("userData");
-    navigate("/login");
-  };  
+    signOut(auth)
+    setUserData({})
+    localStorage.removeItem('userData')
+    navigate('/login')
+  }
 
   return (
     <>
@@ -35,9 +35,8 @@ export const Logout = () => {
         </User>
       )}
     </>
-  );
-};
-
+  )
+}
 
 const User = styled.div`
   height: 50px;
@@ -46,7 +45,7 @@ const User = styled.div`
   align-items: center;
   justify-content: center;
   position: absolute;
-  right:0;
+  right: 0;
 `
 
 const Name = styled.div`
