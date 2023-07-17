@@ -9,7 +9,7 @@ export const Layout = () => {
       <GlobalStyle />
       <Wrapper>
         <Container>
-          <OutletWrapper>
+          <OutletWrapper hasHeader={false}>
             <Outlet />
           </OutletWrapper>
           <BottomNav />
@@ -26,7 +26,7 @@ export const HeaderLayout = () => {
       <Wrapper>
         <Container>
           <Header />
-          <OutletWrapper>
+          <OutletWrapper hasHeader={true}>
             <Outlet />
           </OutletWrapper>
           <BottomNav />
@@ -51,6 +51,8 @@ const Container = styled.div`
   min-height: 100vh;
 `
 
-const OutletWrapper = styled.div`
+const OutletWrapper = styled.div<{ hasHeader: boolean }>`
   flex-grow: 1;
+  margin-top: ${props => (props.hasHeader ? `56px` : `0`)};
+  margin-bottom: 64px;
 `

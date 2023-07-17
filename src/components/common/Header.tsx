@@ -24,14 +24,17 @@ export const Header = () => {
 }
 
 const HeaderContainer = styled.header`
+  position: fixed;
+  top: 0;
   max-width: 768px;
+  width: 100%;
   height: 56px;
   background-color: var(--color-primary);
   color: var(--color-white);
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
+  /* position: relative; */
 
   h1 {
     font-size: 20px;
