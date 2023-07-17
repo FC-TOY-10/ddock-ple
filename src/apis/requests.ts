@@ -20,7 +20,7 @@ export const getWeeklySummary = async () => {
       period: 'weekly',
       userId: import.meta.env.VITE_USER_ID
     }
-    const response = await apiInstance.get('/expenses/summary', { params })
+    const response = await apiInstance.get('api/expenses/summary', { params })
     return response.data
   } catch (error) {
     return error as AxiosError
