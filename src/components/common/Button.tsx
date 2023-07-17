@@ -32,7 +32,11 @@ export const Button = ({
   );
 }
 
-const StyledButton = styled.button`
+interface StyledButtonProps {
+  secondary?: boolean;
+}
+
+const StyledButton = styled.button<StyledButtonProps>`
   height: 3rem;
   border-radius: 0.25rem;
   padding: 0.5rem 1rem;

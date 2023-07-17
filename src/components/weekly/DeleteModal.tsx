@@ -1,12 +1,12 @@
-import { Modal } from '../common';
-import styled from 'styled-components';
+import { Modal } from '../common'
+import styled from 'styled-components'
 
 type DeleteModalProps = {
-  closeModal: () => void;
-  onConfirm: () => void;
-};
+  closeModal: () => void
+  onConfirm: () => void
+}
 
-export const DeleteModal: React.FC<DeleteModalProps>  = ({ closeModal, onConfirm }) => {
+export const DeleteModal: React.FC<DeleteModalProps> = ({ closeModal, onConfirm }) => {
   return (
     <Modal closeModal={closeModal}>
       <p>정말로 지우시겠습니까?</p>
@@ -15,8 +15,8 @@ export const DeleteModal: React.FC<DeleteModalProps>  = ({ closeModal, onConfirm
         <button onClick={closeModal}>아니요</button>
       </ButtonContainer>
     </Modal>
-  );
-};
+  )
+}
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -24,7 +24,7 @@ const ButtonContainer = styled.div`
   gap: 10px;
 
   & > button {
-    background-color: #A68BFC;
+    background-color: #a68bfc;
     border: none;
     border-radius: 5px;
     color: white;
@@ -37,4 +37,4 @@ const ButtonContainer = styled.div`
       background-color: #8c71ef;
     }
   }
-`;
+`
