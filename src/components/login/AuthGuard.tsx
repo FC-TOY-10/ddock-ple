@@ -14,6 +14,7 @@ export const AuthGuard = ({ children, fallback = <Navigate to="/login" /> }: Aut
 
   const auth = getAuth();
 
+  // 인증 상태 확인
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       setIsLoggedIn(Boolean(user));

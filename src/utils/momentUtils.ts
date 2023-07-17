@@ -27,3 +27,17 @@ export const getPrevWeeklyNumber = () => {
   const startDay = moment().startOf('week').day(-7)
   return startDay.week()
 }
+
+// 이번 주 텍스트
+export const getWeekStartEndDate = () => {
+  const startDay = moment().startOf('week').format('YYYY-MM-DD')
+  const endDay = moment().endOf('week').format('YYYY-MM-DD')
+  return `${startDay} ~ ${endDay}`
+}
+
+// 이번 달 텍스트
+export const getMonthStartEndDate = () => {
+  const startDay = moment().startOf('month').format('YYYY-MM-DD')
+  const endDay = moment().endOf('month').format('YYYY-MM-DD')
+  return `${startDay} ~ ${endDay}`
+}

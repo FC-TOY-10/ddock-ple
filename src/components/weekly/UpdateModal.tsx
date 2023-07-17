@@ -2,6 +2,7 @@ import { Modal } from '../common';
 import styled from 'styled-components';
 import { useState,FormEvent, ChangeEvent } from 'react';
 import { Calendar, ExpenseData } from '@/types';
+import { Input } from '@/components';
 
 type UpdateModalProps = {
   closeModal: () => void;
@@ -33,17 +34,17 @@ export const UpdateModal = ({ closeModal, expense, onUpdate }:UpdateModalProps) 
 
   return (
     <Modal closeModal={closeModal}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column" }}>
         {/* 금액 수정란 */}
         <label htmlFor="amount">금액: </label>
-        <Input
+        <CustomInput
           type="number"
           id="amount"
           value={amount}
           onChange={(e: ChangeEvent<HTMLInputElement>) => setAmount(e.target.value)}
           placeholder='금액을 입력하세요'
           required
-        />
+        /><br/>
         {/* 카테고리 수정란 */}
         <label htmlFor="category">카테고리: </label>
         <CategorySelect
@@ -68,17 +69,18 @@ export const UpdateModal = ({ closeModal, expense, onUpdate }:UpdateModalProps) 
   );
 };
 
-const Input = styled.input`
-  padding: 8px;
-  margin-top: 10px;
-  border: 2px solid #ccc;
-  border-radius: 4px;
+const CustomInput = styled(Input)`
+  margin-top: 5px;
 `;
 
 const CategorySelect = styled.select`
-  padding: 8px;
-  margin-top: 10px;
-  border: 2px solid #ccc;
-  border-radius: 4px;
+  width: 100%;
+  margin-top: 5px;
+  padding: 1rem 0.75rem;
+  margin-bottom: 5px;
+  border: 1px solid #A1A1A1;
   cursor: pointer;
+  &:focus {
+    outline: none;
+  }
 `;

@@ -1,7 +1,8 @@
 import { Route, Routes } from 'react-router-dom'
 import { Layout, Layout2, AuthGuard } from 'components/index'
-import { HomePage, WeeklyPage, Chart, Monthly, LoginPage } from 'pages/index'
 
+import { HomePage, WeeklyPage, Chart, Monthly, LoginPage, Search } from 'pages/index'
+import { SignUp } from 'components/index'
 
 export const App = () => {
   return (
@@ -9,12 +10,22 @@ export const App = () => {
       <Route
         path="/login"
         element={<Layout />}>
-      <Route
-        index
-        element={<LoginPage />}/>
+        <Route
+          index
+
+          element={<LoginPage />}/>
+        <Route
+          path="signup"
+          element={<SignUp />}/>
+
       </Route>
 
-      <Route element={<AuthGuard><Layout2 /></AuthGuard>}>
+      <Route
+        element={
+          <AuthGuard>
+            <Layout2 />
+          </AuthGuard>
+        }>
         <Route
           path="/"
           element={<HomePage />}
@@ -30,6 +41,10 @@ export const App = () => {
         <Route
           path="/weekly"
           element={<WeeklyPage />}
+        />
+        <Route
+          path="/search"
+          element={<Search />}
         />
       </Route>
     </Routes>
