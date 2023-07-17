@@ -129,9 +129,9 @@ const Tab = styled.button<{ active: boolean }>`
     active &&
     `
     font-weight: 600;
-    border-bottom: 3px solid #2060ea;
+    border-bottom: 3px solid var(--color-primary);
     opacity: 1;
-    color: #2060ea;
+    color: var(--color-primary);
     `}
 `
 
