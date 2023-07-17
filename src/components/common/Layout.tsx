@@ -9,8 +9,9 @@ export const Layout = () => {
       <GlobalStyle />
       <Wrapper>
         <Container>
-          <Header />
-          <Outlet />
+          <OutletWrapper>
+            <Outlet />
+          </OutletWrapper>
           <BottomNav />
         </Container>
       </Wrapper>
@@ -18,7 +19,7 @@ export const Layout = () => {
   )
 }
 
-export const Layout2 = () => {
+export const HeaderLayout = () => {
   return (
     <>
       <GlobalStyle />
