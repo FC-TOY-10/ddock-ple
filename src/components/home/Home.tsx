@@ -75,7 +75,7 @@ export const Home = () => {
 }
 
 const Container = styled.div`
-  width: 768px;
+  max-width: 768px;
   margin-left: auto;
   margin-right: auto;
   display: flex;

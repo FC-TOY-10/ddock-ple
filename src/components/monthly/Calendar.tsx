@@ -382,7 +382,6 @@ const PriceCntainer = styled.div`
   position: relative;
   height: 60px;
 `
-
 const CalendarBox = styled.div`
   width: 90%;
   position: relative;
@@ -390,41 +389,35 @@ const CalendarBox = styled.div`
   height: 500px;
   background-color: #953fff;
   border-radius: 10px;
-
   .fc-theme-standard .fc-scrollgrid {
     width: 100%;
     background-color: #953fff;
     border-radius: 10px;
     border: none;
   }
-
   .fc-header-toolbar {
     width: 100%;
     position: relative;
     border-radius: 10px 10px 0px 0px;
     padding-bottom: 10px;
   }
-
   .fc .fc-toolbar-title {
     position: absolute;
-    width: 210px;
     margin: auto;
-    left: 290px;
     color: #ffff;
+    max-width: 30%;
+    left: 40%;
     top: 20px;
   }
-
   .fc-event-title fc-sticky {
     padding: 2px;
   }
-
   .fc-h-event {
     border: none;
     background-color: #bfa2db;
     margin-top: 2px;
     border-radius: 5px;
   }
-
   .fc .fc-button-primary {
     border: none;
     background-color: #953fff;
@@ -432,24 +425,20 @@ const CalendarBox = styled.div`
     top: 15px;
     margin-right: 15px;
   }
-
   .fc-button-group {
     position: absolute;
     border: 0;
     outline: 0;
-    width: 6rem;
+    width: 5rem;
     background-color: #953fff;
-    top: 5px;
-    right: 550px;
+    right: 70%;
   }
-
   .fc .fc-daygrid-day-number {
     font-size: 13px;
     font-weight: bold;
     margin-left: 20px;
     color: #ffff;
   }
-
   .fc-col-header-cell-cushion {
     color: #ffff;
     width: 100%;
@@ -458,56 +447,48 @@ const CalendarBox = styled.div`
     padding: 10px;
     font-weight: bold;
   }
-
   /* 요일 행 */
   .fc .fc-scrollgrid-section table {
     height: 11px;
   }
-
   /* border값 초기화 */
   .fc-theme-standard th,
   .fc-theme-standard td {
     border: 0px;
   }
-
   .fc .fc-daygrid-day-top {
     position: relative;
     right: 60px;
   }
-
   .fc .fc-scroller-liquid-absolute {
     position: relative;
   }
-
   div > .fc-daygrid-day-frame.fc-scrollgrid-sync-inner {
     height: max-content;
     display: flex;
     position: relative;
     overflow: hidden;
   }
-
   .fc-daygrid-day-frame .fc-scrollgrid-sync-inner {
     background-color: yellow;
   }
-
   .fc-event-time {
     display: none;
   }
 `
 const PlusCirclreBox = styled.div`
-  width: 70px;
   position: relative;
-  left: 620px;
+  width: 5rem;
+  left: 90%;
   bottom: 20px;
-
   .plusbutton {
-    font-size: 70px;
+    font-size: 5rem;
     color: #442579;
     cursor: pointer;
   }
 `
 const ListDatabox = styled.div`
-  width: 90%;
+  width: 80%;
   position: relative;
   top: 90px;
   left: 40px;
@@ -517,47 +498,45 @@ const ListboxCenter = styled.div`
   position: relative;
   height: 190px;
   margin: auto;
-
   .innerText {
     padding: 5px;
     height: 28px;
     position: relative;
     border: none;
     font-size: 15px;
-
     .editControls {
       position: absolute;
       top: 5px;
-      left: 170px;
+      left: 70%;
+      width: 10%;
     }
   }
 `
 const PlusMoneny = styled.div`
-  width: 40px;
+  width: 30%;
   height: 20px;
   position: absolute;
-  left: 100px;
+  left: 18%;
   font-weight: bold;
-  border-radius: 10px;
 `
 const MinusMoney = styled.div`
-  width: 50px;
-  left: 380px;
+  width: 30%;
+  left: 70%;
   position: absolute;
   font-weight: bold;
 `
-
 const ListboxLeft = styled.div`
   width: 46%;
-  padding-bottom: 230px;
+  height: 240px;
   position: absolute;
   top: 25px;
   background-color: #53c7a1;
   float: left;
-  overflow-y: 230px;
-  max-height: 200px;
+  //overflow-y: 230px;
+  max-height: 180px;
   border-radius: 10px;
-
+  max-height: 240px;
+  overflow-y: auto;
   input {
     width: 70%;
     background-color: #53c7a1;
@@ -576,29 +555,31 @@ const InnerList = styled.div`
   border-bottom: 1px solid #f3efe0;
   position: relative;
   color: white;
-
   .penIcon {
     position: absolute;
     left: 170px;
+    width: 10%;
+    left: 70%;
   }
-
   .trashIcon {
     position: absolute;
     left: 195px;
     top: 6px;
+    left: 90%;
+    width: 10%;
   }
 `
 const ListboxRight = styled.div`
   width: 46%;
-  height: 230px;
-  position: relative;
+  height: 240px;
+  position: absolute;
   top: 25px;
   background-color: #ff6666;
   float: right;
-  overflow-y: 230px;
-  max-height: 230px;
+  left: 55%;
+  max-height: 240px;
   border-radius: 10px;
-
+  overflow-y: auto;
   input {
     width: 70%;
     background-color: #ff6666;

@@ -23,7 +23,7 @@ export const getWeeklySummary = async () => {
       period: 'weekly',
       userId: getUserData()?.email ?? ''
     }
-    const response = await apiInstance.get('/expenses/summary', { params })
+    const response = await apiInstance.get('api/expenses/summary', { params })
     return response.data
   } catch (error) {
     return error as AxiosError

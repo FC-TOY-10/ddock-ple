@@ -93,7 +93,7 @@ export const Login = () => {
 }
 
 const Container = styled.section`
-  width: 768px;
+  max-width: 768px;
   margin-left: auto;
   margin-right: auto;
   display: flex;
