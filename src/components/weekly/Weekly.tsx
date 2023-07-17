@@ -11,13 +11,16 @@ export const Weekly = () => {
   const setWeeklyExpenses = useStore((state) => state.setExpensesData);
   const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
 
+  const userData = useStore((state) => state.userData);
+  const userId = userData.email;
+
   useEffect(() => {
     const fetchData = async () => {
       const currentDate = new Date();
       const currentYear = currentDate.getFullYear();
       const currentMonth = currentDate.getMonth() + 1;
       // 현재 연도와 월에 해당하는 지출 데이터
-      const expensesData = await fetchCalendar(currentYear, currentMonth);
+      const expensesData = await fetchCalendar(currentYear, currentMonth, userId);
       // 가져온 지출 데이터를 주간 지출 데이터로 변환
       setWeeklyExpenses(calculateWeekly(expensesData)); 
     };

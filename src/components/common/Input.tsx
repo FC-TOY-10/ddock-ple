@@ -9,7 +9,7 @@ interface InputProps {
   value?: string | number;
   id?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  required?
+  required?: boolean;
   className?: string;
 }
 

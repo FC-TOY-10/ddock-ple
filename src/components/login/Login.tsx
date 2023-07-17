@@ -3,16 +3,14 @@ import { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom';
 import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
 import { Input } from '@/components'
+import { useStore } from '@/store';
 
 export const Login = () => {
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
   const navigate = useNavigate();
   // 초기 사용자 데이터 설정
-  const initialUserData = localStorage.getItem('userData') ?
-  JSON.parse(localStorage.getItem('userData') || '{}') : {};
-
-  const [userData, setUserData] = useState(initialUserData);
+  const setUserData = useStore((state) => state.setUserData);
 
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
@@ -28,28 +26,26 @@ export const Login = () => {
     })
   }, [auth, navigate])
 
-  // 구글 로그인 처리
+  //구글 로그인 처리
   const handleAuth = () => {
     signInWithPopup(auth, provider)
-      .then(result => {
+      .then((result) => {
         setUserData(result.user);
-        localStorage.setItem("userData", JSON.stringify(result.user));
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
-      })
-  }
+      });
+  };
 
   // 이메일 로그인 처리
   const emailLogin = () => {
     signInWithEmailAndPassword(auth, loginEmail, loginPassword)
-      .then(result => {
+      .then((result) => {
         setUserData(result.user);
-        localStorage.setItem("userData", JSON.stringify(result.user));
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
-      })
+      });
   };
 
   return (

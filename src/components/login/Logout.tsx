@@ -1,25 +1,16 @@
 import { styled } from 'styled-components'
-import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getAuth, signOut } from 'firebase/auth'
+import { AiOutlineLogout } from 'react-icons/ai'
+import { useStore } from '@/store'; 
 
 export const Logout = () => {
   const auth = getAuth();
   const navigate = useNavigate();
+
   // 초기 사용자 데이터 설정
-
-  const initialUserData = localStorage.getItem('userData')
-    ? JSON.parse(localStorage.getItem('userData') || '{}')
-    : {}
-
-  const [userData, setUserData] = useState(initialUserData)
-
-  // 사용자 데이터 확인 및 업데이트
-  useEffect(() => {
-    if (!userData.displayName) {
-      setUserData(JSON.parse(localStorage.getItem('userData') || '{}'))
-    }
-  }, [])
+  const userData = useStore((state) => state.userData); 
+  const setUserData = useStore((state) => state.setUserData);
 
   // 로그아웃 처리
   const handleLogOut = () => {
@@ -32,29 +23,20 @@ export const Logout = () => {
   return (
     <>
       {userData.email && (
-        <User>
-          <Name>{userData.email}님</Name>
-          <Out onClick={handleLogOut}> 로그아웃 </Out>
-        </User>
+        <TabItem>
+          <AiOutlineLogout onClick={handleLogOut} />
+        </TabItem>
       )}
     </>
   )
 }
 
-const User = styled.div`
-  height: 50px;
-  width: 40%;
+const TabItem = styled.li`
+  flex-grow: 1;
   display: flex;
-  align-items: center;
   justify-content: center;
-  position: absolute;
-  right: 0;
-`
-
-const Name = styled.div`
-  margin-right: 10px;
-`
-const Out = styled.div`
-  margin-right: 10px;
+  align-items: center;
+  height: 100%;
+  font-size: 24px;
   cursor: pointer;
 `

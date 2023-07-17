@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { HomeModal, Spinner } from 'components/index';
 import { fetchExpense } from '@/apis/Expense';
 import { TotalAmount } from '@/types';
+import { useStore } from '@/store';
 
 // 로컬 스토리지에서 목표 금액을 가져옴
 const useSavedGoal = () => {
@@ -18,6 +19,9 @@ export const Home = () => {
   const [progress, setProgress] = useState(0);
   const [goal, setGoal] = useState(initialGoal);
 
+  const userData = useStore((state) => state.userData);
+  const userId = userData.email; 
+
   // 금액과 목표 변경시 spinner 업데이트
   useEffect(() => {
     updateProgress(totalAmount);
@@ -30,7 +34,7 @@ export const Home = () => {
 
   // 월간 소비 데이터를 가져오는 함수
   const fetchMonthlyExpense = async () => {
-    const data = await fetchExpense('monthly');
+    const data = await fetchExpense('monthly', userId);
     const sortedData = data.sort((a: TotalAmount, b: TotalAmount) => b._id.localeCompare(a._id));
     const latestTotalAmount = sortedData[0].totalAmount;
     setTotalAmount(latestTotalAmount);

@@ -1,20 +1,17 @@
 import { styled } from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
 import { AiOutlineSearch } from 'react-icons/ai'
-import { Logout } from 'components/index'
 
 export const Header = () => {
   const path = useLocation().pathname
 
   return (
     <HeaderContainer>
-      <h1>Header Title</h1>
       {path === '/' || path === '/search' ? null : (
         <SearchLink to="/search">
           <AiOutlineSearch />
         </SearchLink>
       )}
-      <Logout />
     </HeaderContainer>
   )
 }
