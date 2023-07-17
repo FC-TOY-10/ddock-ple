@@ -3,7 +3,13 @@ import { ChartCard } from 'components/index'
 import { chartCategory } from 'constants/index'
 import { getWeeklyData, getWeeklySummary } from 'apis/index'
 import { ICalendarResponse, IWeeklyHistory, ISummaryResponse } from 'types/index'
-import { getTodayYearMonth, getWeekEndDay, getWeekStartDay, getPrevWeeklyNumber } from 'utils/index'
+import {
+  getTodayYearMonth,
+  getWeekEndDay,
+  getWeekStartDay,
+  getPrevWeeklyNumber,
+  getUserData
+} from 'utils/index'
 
 import { Chart as ChartJS, ArcElement, Tooltip } from 'chart.js'
 import { Doughnut } from 'react-chartjs-2'
@@ -76,7 +82,7 @@ export const WeeklyChart = React.memo(() => {
     setLoading(true)
     getWeeklyData({
       ...todayYearMonth,
-      userId: import.meta.env.VITE_USER_ID
+      userId: getUserData()?.email ?? ''
     })
       .then(res => {
         const weeklyData = Object.entries(res).filter(entry => {
