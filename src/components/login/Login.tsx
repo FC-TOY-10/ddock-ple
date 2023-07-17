@@ -9,7 +9,7 @@ export const Login = () => {
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
   const navigate = useNavigate();
-  // 초기 사용자 데이터 설정
+  
   const setUserData = useStore((state) => state.setUserData);
 
   const [loginEmail, setLoginEmail] = useState("");

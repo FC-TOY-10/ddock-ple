@@ -37,8 +37,9 @@ const Wrapper = styled.div`
 const TabItem = styled.li<{ isSelected: boolean }>`
   flex-grow: 1;
   height: 40px;
+  margin: 0 40px;
   color: var(--color-black);
-  border-bottom: 2px solid;
+  border-bottom: 3px solid;
   border-color: ${props => (props.isSelected ? 'var(--color-tab-active)' : 'var(--color-white)')};
   font-weight: ${props => (props.isSelected ? '700' : '500')};
   display: flex;

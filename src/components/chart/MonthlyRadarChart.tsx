@@ -18,7 +18,7 @@ type MonthlyRadarChartProps = {
   monthlyData: ICalendarResponse[]
 }
 
-export const MonthlyRadarChart = ({ monthlyData }: MonthlyRadarChartProps) => {
+export const MonthlyRadarChart = React.memo(({ monthlyData }: MonthlyRadarChartProps) => {
   const categories = chartCategory.map(category => category.category)
 
   const chartData = useMemo(() => {
@@ -77,4 +77,4 @@ export const MonthlyRadarChart = ({ monthlyData }: MonthlyRadarChartProps) => {
       />
     </>
   )
-}
+})

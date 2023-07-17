@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { ICalendarResponse } from 'types/index'
+import { getUserData } from 'utils/index'
 
 import { styled } from 'styled-components'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
@@ -14,6 +15,7 @@ type MonthlyTotalCardProps = {
 }
 
 export const MonthlyTotalCard = React.memo(({ monthlyData }: MonthlyTotalCardProps) => {
+  const user = getUserData()?.displayName
   const nowDate = moment().utc(true)
 
   const expendTotalPrice = useMemo(() => {
@@ -50,7 +52,10 @@ export const MonthlyTotalCard = React.memo(({ monthlyData }: MonthlyTotalCardPro
 
   return (
     <Card>
-      <h3>{`Team10님의 ${nowDate.format('M월 ')} 자산 분석`}</h3>
+      <h3>
+        {user ? `${user}님의` : '나의 '}
+        {`${nowDate.format('M월 ')} 자산 분석`}
+      </h3>
       <p className="total">
         <span>수입 {incomeTotalPrice.toLocaleString()}원</span>
         <span>지출 {expendTotalPrice.toLocaleString()} 원</span>

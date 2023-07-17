@@ -56,7 +56,7 @@ const CategoryButton = styled.button`
   outline: none;
   border: none;
   background-color: transparent;
-  color: #2060ea;
+  color: var(--color-primary);
   font-weight: 700;
   font-size: 18px;
   line-height: 36px;

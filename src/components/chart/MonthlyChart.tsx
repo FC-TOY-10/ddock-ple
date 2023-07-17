@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { MonthlyTotalCard, Top3CategoryChart, MonthlyRadarChart } from 'components/index'
 import { getWeeklyData } from 'apis/index'
 import { ICalendarResponse } from 'types/index'
-import { getTodayYearMonth } from 'utils/index'
+import { getTodayYearMonth, getUserData } from 'utils/index'
 
 import { styled } from 'styled-components'
 
@@ -15,7 +15,7 @@ export const MonthlyChart = React.memo(() => {
     setLoading(true)
     getWeeklyData({
       ...todayYearMonth,
-      userId: import.meta.env.VITE_USER_ID
+      userId: getUserData()?.email ?? ''
     }).then(res => {
       const histories = [] as ICalendarResponse[]
       const monthlyData = Object.entries(res)
