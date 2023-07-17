@@ -6,7 +6,7 @@ import { AiFillPlusCircle } from 'react-icons/ai'
 import { BsTrash, BsPencil, BsCheckSquare } from "react-icons/bs";
 import interactionPlugin from '@fullcalendar/interaction';
 import { ModalContent } from "./InputModal";
-import axios from "axios";
+import { calendarApi, updateCalendar, deleteItem, updateAmount } from "@/apis/calendar";
 
 interface TResult {
   _id : string;
@@ -135,10 +135,9 @@ export default function Full () {
   };
 
   const getData = async(year: string,month: string) => {
+    const userId = `team10`
     try {
-      const response = await axios.get(
-        `http://52.78.195.183:3003/api/expenses/calendar?year=${year}&month=${month}&userId=team10`
-      );
+      const response = await calendarApi(year, month, userId);
       console.log(response.data);
       return response;
     } catch (error) {
@@ -146,6 +145,7 @@ export default function Full () {
       throw error;
     }
   };
+
 
   const handleblankDateClick = () => {
     setViewDetail([]);
@@ -201,9 +201,10 @@ export default function Full () {
       } else {
         modifiedAmount = `-${editedTitle}`; // 양수일 경우 음수로 변경하여 전송
       }
-      const response = await axios.put(`http://52.78.195.183:3003/api/expenses/${itemId}`, {
-        amount: modifiedAmount, // 수정된 값 전송
-      });
+      const updateprice = {
+        amount: modifiedAmount
+      }
+      const response = await updateAmount(itemId,updateprice);
       if (response.status === 200) {
         alert("수정되었습니다.")
         setEditingItemId('');
@@ -222,9 +223,10 @@ export default function Full () {
     } else {
       try {
         setEditedTitle(editedTitle);
-        const response = await axios.put(`http://52.78.195.183:3003/api/expenses/${itemId}`, {
-          amount: editedTitle, // 수정된 값 전송
-        });
+        const price = {
+          amount: editedTitle
+        }
+        const response = await updateCalendar(itemId, price)
         if (response.status === 200) {
           alert("수정되었습니다.")
           setEditingItemId('');
@@ -237,10 +239,10 @@ export default function Full () {
     }
   };
 
-  const onDeletelist = async (itemId:any) => {
+  const onDeletelist = async (itemId:string) => {
     if (confirm('삭제하시겠습니까?')) {
       try {
-        const response = await axios.delete(`http://52.78.195.183:3003/api/expenses/${itemId}`);
+        const response = await deleteItem(itemId);
         if (response.status === 200) {
           alert('삭제되었습니다');
           const updatedViewDetail = viewDetail.filter(
@@ -381,7 +383,6 @@ const PriceCntainer = styled.div`
   margin: auto;
   position: relative;
   height: 60px;
-  background-color: green;
 `
 
 const CalendarBox = styled.div`
@@ -408,10 +409,10 @@ const CalendarBox = styled.div`
 
   .fc .fc-toolbar-title {
     position: absolute;
-    width: 210px;
     margin: auto;
-    left: 290px;
     color:#ffff;
+    max-width: 30%;
+    left: 40%;
     top: 20px;
   }
 
@@ -438,10 +439,9 @@ const CalendarBox = styled.div`
     position: absolute;
     border: 0;
     outline: 0;
-    width: 6rem;
+    width: 5rem;
     background-color: #953fff;
-    top: 5px;
-    right: 550px;
+    right: 70%;
   }
 
   .fc .fc-daygrid-day-number {
@@ -495,19 +495,19 @@ const CalendarBox = styled.div`
   }
 `
 const PlusCirclreBox = styled.div`
-  width: 70px;
   position: relative;
-  left: 620px;
+  width: 5rem;
+  left: 90%;
   bottom: 20px;
 
   .plusbutton{
-    font-size: 70px;
+    font-size: 5rem;
     color: #442579;
     cursor: pointer;
   }
 `
 const ListDatabox = styled.div`
-  width: 90%;
+  width:80%;
   position: relative;
   top: 90px;
   left: 40px;
@@ -528,35 +528,37 @@ const ListboxCenter = styled.div`
     .editControls{
       position: absolute;
       top: 5px;
-      left: 170px;
+      left: 70%;
+      width: 10%;
     }
   }
 `
 const PlusMoneny = styled.div`
-  width: 40px;
+  width: 30%;
   height: 20px;
   position: absolute;
-  left: 100px;
+  left: 18%;
   font-weight: bold;
-  border-radius: 10px;
 `
 const MinusMoney = styled.div`
-  width: 50px;
-  left: 380px;
+  width: 30%;
+  left: 70%;
   position: absolute;
   font-weight: bold;
 `
 
 const ListboxLeft = styled.div`
   width: 46%;
-  padding-bottom: 230px;
+  height: 240px;
   position: absolute;
   top: 25px;
   background-color: #53c7a1;
   float: left;
-  overflow-y: 230px;
-  max-height: 200px;
+  //overflow-y: 230px;
+  max-height: 180px;
   border-radius: 10px;
+  max-height: 240px;
+  overflow-y: auto;
 
   input {
     width: 70%;
@@ -580,24 +582,29 @@ const InnerList = styled.div`
 .penIcon{
   position: absolute;
   left: 170px;
+  width: 10%;
+  left: 70%;
 }
 
 .trashIcon{
   position: absolute;
   left: 195px;
   top: 6px;
+  left: 90%;
+  width: 10%;
 }
 `
 const ListboxRight = styled.div`
   width: 46%;
-  height: 230px;
-  position: relative;
+  height: 240px;
+  position: absolute;
   top: 25px;
   background-color: #FF6666;
   float: right;
-  overflow-y: 230px;
-  max-height: 230px;
+  left: 55%;
+  max-height: 240px;
   border-radius: 10px;
+  overflow-y: auto;
 
   input {
     width: 70%;

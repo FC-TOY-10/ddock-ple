@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Select, Radio } from 'antd';
+import { submitApi } from "@/apis/calendar";
 import axios from "axios";
 
 
@@ -118,23 +119,41 @@ export function ModalContent({ onClose, onSearch}: { onClose: () => void, onSear
     }
   }
 
-  const sendReg = async (updatedData:any) => {
-    console.log(updatedData)
+  // const sendReg = async (updatedData:any) => {
+  //   //console.log(updatedData)
+  //   try {
+  //     //const response = await axios.post('/api/expenses', updatedData)
+  //     const response = await submitApi(updatedData);
+  //     console.log(response.status);
+  //     if(response.status === 201){
+  //       //console.log(updatedData);
+  //       alert("등록되었습니다.");
+  //       onSearch(updatedData.date);
+  //       onClose();
+  //     }else {
+  //       alert("등록 실패했습니다. 관리자에게 문의하세요.")
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
+
+  const sendReg = async (updatedData: any) => {
     try {
-      const response = await axios.post('http://52.78.195.183:3003/api/expenses', updatedData);
+      // const response = await submitApi('http://52.78.195.183:3003/api',updatedData );
+      const response = await submitApi(updatedData);
       console.log(response);
-      if(response.status == 201){
+      if (response.status === 201) {
         alert("등록되었습니다.");
         onSearch(updatedData.date);
         onClose();
-
-      }else {
-        alert("등록 실패했습니다. 관리자에게 문의하세요.")
+      } else {
+        alert("등록 실패했습니다. 관리자에게 문의하세요.");
       }
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   const statusRadio = (e:any) => {
     const selectItem = e.target.value;
@@ -218,10 +237,8 @@ const ModalComponent = styled.div`
 `
 const ModaltopBox = styled.div`
   width: 100%;
-  //padding-bottom: 10px;
   position: relative;
   margin-top: 10px;
-  //background-color: rosybrown;
   display: flex;
 `
 
