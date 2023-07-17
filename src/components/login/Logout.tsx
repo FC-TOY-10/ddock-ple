@@ -1,21 +1,21 @@
 import { styled } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-import { getAuth, signOut } from 'firebase/auth'
+import { User, getAuth, signOut } from 'firebase/auth'
 import { AiOutlineLogout } from 'react-icons/ai'
-import { useStore } from '@/store'; 
+import { useStore } from '@/store'
 
 export const Logout = () => {
-  const auth = getAuth();
-  const navigate = useNavigate();
+  const auth = getAuth()
+  const navigate = useNavigate()
 
   // 초기 사용자 데이터 설정
-  const userData = useStore((state) => state.userData); 
-  const setUserData = useStore((state) => state.setUserData);
+  const userData = useStore(state => state.userData)
+  const setUserData = useStore(state => state.setUserData)
 
   // 로그아웃 처리
   const handleLogOut = () => {
     signOut(auth)
-    setUserData({})
+    setUserData({} as User)
     localStorage.removeItem('userData')
     navigate('/login')
   }

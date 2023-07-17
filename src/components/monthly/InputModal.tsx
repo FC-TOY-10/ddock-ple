@@ -1,148 +1,151 @@
-import { useState, forwardRef} from "react";
-import styled from 'styled-components';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { Select, Radio } from 'antd';
-import axios from "axios";
+import { useState, forwardRef } from 'react'
+import styled from 'styled-components'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import { Select, Radio } from 'antd'
+import axios from 'axios'
 
-
-export function ModalContent({ onClose, onSearch}: { onClose: () => void, onSearch: (params?: any) => void }) {
+export function ModalContent({
+  onClose,
+  onSearch
+}: {
+  onClose: () => void
+  onSearch: (params?: any) => void
+}) {
   const [ViewData, setViewData] = useState({
-    userId: "team10",
+    userId: 'team10',
     amount: 0,
     priceText: '',
     date: new Date(),
-    category: "입금",
-    radioStatus: "입금"
-  });
+    category: '입금',
+    radioStatus: '입금'
+  })
 
   const buttons = [
-    { text: "입금", backgroundColor: "#53c7a1", color: "white" },
-    { text: "지출", backgroundColor: "#FF6666", color: "white" },
-  ];
+    { text: '입금', backgroundColor: '#53c7a1', color: 'white' },
+    { text: '지출', backgroundColor: '#FF6666', color: 'white' }
+  ]
 
   const optiondatalist = [
     {
       value: '식비',
-      label: '식비',
+      label: '식비'
     },
     {
       value: '교통비',
-      label: '교통비',
+      label: '교통비'
     },
     {
       value: '의료/건강',
-      label: '의료/건강',
+      label: '의료/건강'
     },
     {
       value: '쇼핑',
-      label: '쇼핑',
+      label: '쇼핑'
     },
     {
       value: '공과금',
-      label: '공과금',
+      label: '공과금'
     },
     {
       value: '여가',
-      label: '여가',
+      label: '여가'
     },
     {
       value: '기타',
-      label: '기타',
-    },
-  ];
+      label: '기타'
+    }
+  ]
 
-  const getChangeDate = (date:any) => {
+  const getChangeDate = (date: any) => {
     setViewData(prevData => ({
       ...prevData,
       date: date
-    }));
-  };
+    }))
+  }
 
-
-  const handleChange = (e:any) => {
-    const formattedValue = e.target.value.replace(/[^0-9]/g, ""); // 숫자 이외의 문자 제거
-    const formattedNumber = formatter.format(Number(formattedValue)); // 포맷 적용
+  const handleChange = (e: any) => {
+    const formattedValue = e.target.value.replace(/[^0-9]/g, '') // 숫자 이외의 문자 제거
+    const formattedNumber = formatter.format(Number(formattedValue)) // 포맷 적용
 
     setViewData(prevData => ({
       ...prevData,
       amount: Number(formattedValue),
       priceText: formattedNumber
-    }));
-  };
+    }))
+  }
 
-  const formatter = new Intl.NumberFormat("ko-KR");
+  const formatter = new Intl.NumberFormat('ko-KR')
 
-
-  const DatePick = forwardRef(({ value, onClick}: { value: string, onClick: () => void}, ref) => (
-    <Datebutton className='custom-btn' onClick={onClick} >
+  const DatePick = forwardRef(({ value, onClick }: { value: string; onClick: () => void }, ref) => (
+    <Datebutton
+      className="custom-btn"
+      onClick={onClick}>
       {value}
     </Datebutton>
-  ));
+  ))
 
-
-  const onChangeSelect = (value:any) => {
+  const onChangeSelect = (value: any) => {
     setViewData(prevData => ({
       ...prevData,
       category: value
-    }));
-  };
- 
+    }))
+  }
+
   const handleButtonInnerClick = () => {
-    onClose();
-  };
+    onClose()
+  }
 
   const submitButton = () => {
     if (ViewData.amount === 0) {
-      alert("금액을 입력해주세요.");
-      return false;
+      alert('금액을 입력해주세요.')
+      return false
     }
 
     if (ViewData.category === '' && ViewData.radioStatus !== '입금') {
-      alert("카테고리를 선택해주세요.");
-      return false;
+      alert('카테고리를 선택해주세요.')
+      return false
     }
 
-    let updatedAmount = ViewData.amount;
-    if (ViewData.radioStatus === "지출") {
-      updatedAmount = -Number(updatedAmount);
+    let updatedAmount = ViewData.amount
+    if (ViewData.radioStatus === '지출') {
+      updatedAmount = -Number(updatedAmount)
     }
 
     const updatedData = {
       ...ViewData,
       amount: updatedAmount
-    };
+    }
 
-    if (confirm("내역을 등록하시겠습니까?")) {
-      sendReg(updatedData);
+    if (confirm('내역을 등록하시겠습니까?')) {
+      sendReg(updatedData)
     }
   }
 
-  const sendReg = async (updatedData:any) => {
+  const sendReg = async (updatedData: any) => {
     console.log(updatedData)
     try {
-      const response = await axios.post('http://52.78.195.183:3003/api/expenses', updatedData);
-      console.log(response);
-      if(response.status == 201){
-        alert("등록되었습니다.");
-        onSearch(updatedData.date);
-        onClose();
-
-      }else {
-        alert("등록 실패했습니다. 관리자에게 문의하세요.")
+      const response = await axios.post('http://52.78.195.183:3003/api/expenses', updatedData)
+      console.log(response)
+      if (response.status == 201) {
+        alert('등록되었습니다.')
+        onSearch(updatedData.date)
+        onClose()
+      } else {
+        alert('등록 실패했습니다. 관리자에게 문의하세요.')
       }
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
   }
 
-  const statusRadio = (e:any) => {
-    const selectItem = e.target.value;
+  const statusRadio = (e: any) => {
+    const selectItem = e.target.value
 
     setViewData(prevData => ({
       ...prevData,
       radioStatus: selectItem
-    }));
+    }))
   }
 
   return (
@@ -153,9 +156,14 @@ export function ModalContent({ onClose, onSearch}: { onClose: () => void, onSear
             dateFormat="yyyy-MM-dd"
             selected={ViewData.date}
             onChange={getChangeDate}
-            customInput={<DatePick value={""} onClick={function (): void {
-              throw new Error("Function not implemented.");
-            } } />}
+            customInput={
+              <DatePick
+                value={''}
+                onClick={function (): void {
+                  throw new Error('Function not implemented.')
+                }}
+              />
+            }
           />
         </DateBox>
         <XbuttonBox onClick={handleButtonInnerClick}>
@@ -169,7 +177,7 @@ export function ModalContent({ onClose, onSearch}: { onClose: () => void, onSear
           name="amount"
           onChange={handleChange}
           value={ViewData.priceText}
-          style={{ fontSize: "60px" }}
+          style={{ fontSize: '60px' }}
           placeholder="0"
         />
       </InputBox>
@@ -178,7 +186,7 @@ export function ModalContent({ onClose, onSearch}: { onClose: () => void, onSear
           placeholder="카테고리를 골라주세요!"
           optionFilterProp="children"
           onChange={onChangeSelect}
-          style={{ margin: "auto", width: "200px" }}
+          style={{ margin: 'auto', width: '200px' }}
           //onSearch={onSearch}
           filterOption={(input, option) =>
             (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
@@ -188,9 +196,15 @@ export function ModalContent({ onClose, onSearch}: { onClose: () => void, onSear
       </SelectBox>
       <ButtonBox>
         <ButtonInner>
-          <Radio.Group name="radiogroup" defaultValue={'입금'} onChange={statusRadio}>
+          <Radio.Group
+            name="radiogroup"
+            defaultValue={'입금'}
+            onChange={statusRadio}>
             {buttons.map((button, index) => (
-              <StyledButton key={index} backgroundColor={button.backgroundColor} color={button.color}>
+              <StyledButton
+                key={index}
+                backgroundColor={button.backgroundColor}
+                color={button.color}>
                 <Radio value={button.text}>{button.text}</Radio>
               </StyledButton>
             ))}
@@ -202,7 +216,7 @@ export function ModalContent({ onClose, onSearch}: { onClose: () => void, onSear
       </Register>
     </ModalComponent>
   )
-};
+}
 
 const ModalComponent = styled.div`
   width: 500px;
@@ -240,11 +254,11 @@ const XbuttonBox = styled.div`
   left: 290px;
   top: 8px;
 
-  button{
+  button {
     width: inherit;
     height: inherit;
     border: none;
-    background-color: #D8D8D8;
+    background-color: #d8d8d8;
   }
 `
 
@@ -253,7 +267,7 @@ const InputBox = styled.div`
   height: 90px;
   margin-top: 30px;
 
-  .money{
+  .money {
     position: relative;
     font-size: 60px;
     font-weight: bold;
@@ -262,7 +276,7 @@ const InputBox = styled.div`
     left: 40px;
   }
 
-  input{
+  input {
     width: 350px;
     height: 70px;
     position: relative;
@@ -271,7 +285,7 @@ const InputBox = styled.div`
     padding: 10px;
     border: none;
     caret-color: red;
-    color:#19376D;
+    color: #19376d;
   }
 
   input:focus {
@@ -283,11 +297,11 @@ const Datebutton = styled.button`
   height: 40px;
   border: none;
   border-radius: 30px;
-  background-color: #8D72E1;
+  background-color: #8d72e1;
   color: white;
- 
-  :hover{
-    background-color: #AD7BE9;
+
+  :hover {
+    background-color: #ad7be9;
   }
 `
 
@@ -296,7 +310,7 @@ const SelectBox = styled.div`
   height: 50px;
   margin: auto;
   position: relative;
-  top:15px;
+  top: 15px;
 `
 
 const ButtonBox = styled.div`
@@ -313,8 +327,8 @@ const ButtonInner = styled.div`
 `
 
 const StyledButton = styled.button<{ backgroundColor: string; color: string }>`
-  background-color: ${(props) => props.backgroundColor};
-  color: ${(props) => props.color};
+  background-color: ${props => props.backgroundColor};
+  color: ${props => props.color};
   /* 원하는 스타일 속성 추가 */
   width: 150px;
   height: 65px;
@@ -324,15 +338,14 @@ const StyledButton = styled.button<{ backgroundColor: string; color: string }>`
   border: none;
   border-radius: 4px;
   cursor: pointer;
-`;
+`
 
 const Register = styled.div`
   width: 140px;
   height: 50px;
-  background-color: green;
   margin: auto;
 
-  button{
+  button {
     width: inherit;
     height: inherit;
   }
