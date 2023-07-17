@@ -2,10 +2,19 @@ import create from 'zustand';
 import { Calendar, ExpenseData } from './types';
 import { deleteExpense, updateExpense } from './apis/Expense';
 
+const initialUserData = localStorage.getItem('userData')
+  ? JSON.parse(localStorage.getItem('userData') || '{}')
+  : {};
+
 export const useStore = create((set) => ({
   expensesData: [],
   setExpensesData: (expenses: Calendar[]) => {
     set({ expensesData: expenses });
+  },
+  userData: initialUserData,
+  setUserData: (data) => {
+    set({ userData: data });
+    localStorage.setItem('userData', JSON.stringify(data));
   },
   // 제거
   removeExpense: async (weekIndex: number, expenseIndex: number, expenseId: string) => {

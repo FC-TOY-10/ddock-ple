@@ -9,8 +9,8 @@ import {
   AiOutlineSchedule,
   AiFillPieChart,
   AiOutlinePieChart,
-  AiOutlineLogout
 } from 'react-icons/ai'
+import {Logout} from '@/components'
 
 export const BottomNav = () => {
   const path = useLocation().pathname
@@ -33,10 +33,8 @@ export const BottomNav = () => {
         <TabItem isActive={path === '/chart'}>
           <Link to="/chart">{path === '/chart' ? <AiFillPieChart /> : <AiOutlinePieChart />}</Link>
         </TabItem>
-        <TabItem isActive={path === '/logout'}>
-          <Link to="/">
-            <AiOutlineLogout />
-          </Link>
+        <TabItem isActive={false}>
+          <Logout />
         </TabItem>
       </ul>
     </Navigation>
@@ -48,10 +46,13 @@ interface ITabItemProps {
 }
 
 const Navigation = styled.nav`
+  max-width: 768px;
   width: 100%;
   height: 64px;
   background-color: var(--color-gray-ddd);
   box-shadow: -4px 0px 20px rgba(0, 0, 0, 0.19);
+  position: fixed;
+  bottom: 0;
 
   ul {
     display: flex;

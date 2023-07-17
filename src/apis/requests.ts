@@ -1,8 +1,9 @@
-import axios, { all } from 'axios'
+import axios from 'axios'
 import { AxiosError } from 'axios'
 import moment from 'moment'
 
 import { apiInstance } from 'apis/index'
+import { getUserData } from 'utils/index'
 import { IRequestByDate, ISearchQuery, ExpenseData } from 'types/index'
 
 // 차트 주간 조회
@@ -20,7 +21,7 @@ export const getWeeklySummary = async () => {
   try {
     const params = {
       period: 'weekly',
-      userId: import.meta.env.VITE_USER_ID
+      userId: getUserData()?.email ?? ''
     }
     const response = await apiInstance.get('api/expenses/summary', { params })
     return response.data
@@ -35,7 +36,7 @@ export const searchByDateCategory = async (searchQuery: ISearchQuery) => {
     const requests = searchQuery.categories.map(category => {
       const params = {
         q: category,
-        userId: import.meta.env.VITE_USER_ID
+        userId: getUserData()?.email ?? ''
       }
       return apiInstance.get('/expenses/search', { params })
     })

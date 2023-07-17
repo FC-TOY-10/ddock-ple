@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import { IWeeklyHistory } from 'types/index'
+import { getUserData } from 'utils/index'
 
 import { styled } from 'styled-components'
 import {
@@ -23,6 +24,7 @@ type ChartCardProps = {
 }
 
 export const ChartCard = React.memo(({ weeklyDatas, loading }: ChartCardProps) => {
+  const user = getUserData()?.displayName
   const startDay = moment().startOf('week')
 
   const weekOfMonth = (m: Moment) => m.week() - moment(m).startOf('month').week() + 1
@@ -120,7 +122,10 @@ export const ChartCard = React.memo(({ weeklyDatas, loading }: ChartCardProps) =
 
   return (
     <Card>
-      <h4>{`Team10님의 ${nowDate.format('M월 ')} ${weekOfMonth(nowDate)}주차`}</h4>
+      <h4>
+        {user ? `${user}님의` : '나의 '}
+        {`${nowDate.format('M월 ')} ${weekOfMonth(nowDate)}주차 주간 분석`}
+      </h4>
       <p className="total">
         <span>수입 {incomeTotalList.reduce((acc, cur) => (acc += cur), 0).toLocaleString()}원</span>
         <span>

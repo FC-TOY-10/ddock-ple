@@ -4,9 +4,9 @@ const API_URL = 'http://52.78.195.183:3003/api'
 
 //월간, 주간, 일간 소비량 호출 함수
 type Period = 'daily' | 'monthly' | 'weekly';
-export const fetchExpense = async (period:Period) => {
+export const fetchExpense = async (period:Period, userId: string) => {
   try {
-    const response = await fetch(`${API_URL}/expenses/summary?period=${period}&userId=team10`);
+    const response = await fetch(`${API_URL}/expenses/summary?period=${period}&userId=${userId}`);
     if (!response.ok) {
       throw new Error('Failed to fetch monthly expenses');
     }
@@ -41,10 +41,10 @@ export const createExpense = async (expenseData:ExpenseData) => {
 };
 
 //달력 함수
-export const fetchCalendar = async (year:Number, month:Number) => {
+export const fetchCalendar = async (year:Number, month:Number, userId: string) => {
   try {
     const response =
-     await fetch(`${API_URL}/expenses/calendar?year=${year}&month=${month}&userId=team10`);
+     await fetch(`${API_URL}/expenses/calendar?year=${year}&month=${month}&userId=${userId}`);
     if (!response.ok) {
       throw new Error('Failed to fetch monthly expenses');
     }

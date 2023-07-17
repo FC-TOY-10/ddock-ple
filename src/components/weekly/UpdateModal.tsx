@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useState,FormEvent, ChangeEvent } from 'react';
 import { Calendar, ExpenseData } from '@/types';
 import { Input } from '@/components';
+import { useStore } from '@/store';
 
 type UpdateModalProps = {
   closeModal: () => void;
@@ -14,6 +15,9 @@ export const UpdateModal = ({ closeModal, expense, onUpdate }:UpdateModalProps) 
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
 
+  const userData = useStore((state) => state.userData);
+  const userId = userData.email;
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -21,7 +25,7 @@ export const UpdateModal = ({ closeModal, expense, onUpdate }:UpdateModalProps) 
     const updatedExpense = {
       amount: category === '입금' ? parseInt(amount) : -parseInt(amount),
       category,
-      userId: 'team10',
+      userId,
       date: expense.date,
     };
 

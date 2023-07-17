@@ -177,5 +177,6 @@ const ConfirmButton = styled.button`
   font-size: 20px;
   line-height: 44px;
   color: var(--color-white);
-  background-color: #240fe0;
+  background-color: var(--color-primary);
+  border: none;
 `

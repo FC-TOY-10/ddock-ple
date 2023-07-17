@@ -1,7 +1,7 @@
 import axios from 'axios'
 import qs from 'query-string'
 
-axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
+axios.defaults.baseURL = 'http://52.78.195.183:3003/api/'
 
  export const api = axios
 
