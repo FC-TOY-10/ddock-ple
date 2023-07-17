@@ -88,7 +88,6 @@ export function ModalContent({ onClose, onSearch}: { onClose: () => void, onSear
     }));
   };
  
-
   const handleButtonInnerClick = () => {
     onClose();
   };
@@ -120,12 +119,13 @@ export function ModalContent({ onClose, onSearch}: { onClose: () => void, onSear
   }
 
   const sendReg = async (updatedData:any) => {
+    console.log(updatedData)
     try {
       const response = await axios.post('http://52.78.195.183:3003/api/expenses', updatedData);
       console.log(response);
       if(response.status == 201){
         alert("등록되었습니다.");
-        onSearch();
+        onSearch(updatedData.date);
         onClose();
 
       }else {

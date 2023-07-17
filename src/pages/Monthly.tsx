@@ -10,6 +10,5 @@ export const Monthly = () => {
 const MonthlyContainer = styled.main`
   width: 100%;
   flex-grow: 1;
-  height: 100%;
-  //background-color: #f3bdbd;
+  padding-bottom:100px;
 `
