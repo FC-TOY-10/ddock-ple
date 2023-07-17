@@ -3,6 +3,7 @@ import { chartCategory } from 'constants/index'
 import { DateFilterTab, CategoryFilter, SearchResult } from 'components/index'
 import { ExpenseData, ISearchQuery } from 'types/index'
 import { searchByDateCategory } from 'apis/index'
+import { sortByDate } from 'utils/index'
 
 import { styled } from 'styled-components'
 import { AiOutlineSearch } from 'react-icons/ai'
@@ -36,7 +37,7 @@ export const Search = () => {
     searchByDateCategory(searchQuery)
       .then(
         res => {
-          setSearchResult(res as ExpenseData[])
+          setSearchResult(sortByDate(res as ExpenseData[]))
         },
         error => {
           console.log(error)

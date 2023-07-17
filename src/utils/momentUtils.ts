@@ -1,5 +1,6 @@
 import 'moment/locale/ko'
-import moment, { Moment } from 'moment'
+import moment from 'moment'
+import { ExpenseData } from 'types/index'
 
 export const getTodayYearMonth = () => {
   return {
@@ -40,4 +41,9 @@ export const getMonthStartEndDate = () => {
   const startDay = moment().startOf('month').format('YYYY-MM-DD')
   const endDay = moment().endOf('month').format('YYYY-MM-DD')
   return `${startDay} ~ ${endDay}`
+}
+
+// 날짜 순 정렬
+export const sortByDate = (list: ExpenseData[]) => {
+  return list.sort((a, b) => a.date.localeCompare(b.date))
 }
