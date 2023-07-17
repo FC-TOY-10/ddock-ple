@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Select, Radio } from 'antd';
-import axios from "axios";
-
+import { getUserData } from 'utils/index'
+import { submitApi } from "@/apis/calendar";
 
 export function ModalContent({ onClose, onSearch}: { onClose: () => void, onSearch: (params?: any) => void }) {
   const [ViewData, setViewData] = useState({
-    userId: "team10",
+    userId: "",
     amount: 0,
     priceText: '',
     date: new Date(),
@@ -110,6 +110,7 @@ export function ModalContent({ onClose, onSearch}: { onClose: () => void, onSear
 
     const updatedData = {
       ...ViewData,
+      userId: getUserData()?.email ?? '',
       amount: updatedAmount
     };
 
@@ -118,23 +119,21 @@ export function ModalContent({ onClose, onSearch}: { onClose: () => void, onSear
     }
   }
 
-  const sendReg = async (updatedData:any) => {
-    console.log(updatedData)
+  
+  const sendReg = async (updatedData: any) => {
     try {
-      const response = await axios.post('http://52.78.195.183:3003/api/expenses', updatedData);
-      console.log(response);
-      if(response.status == 201){
+      const response = await submitApi(updatedData);
+      if (response.status === 201) {
         alert("등록되었습니다.");
         onSearch(updatedData.date);
         onClose();
-
-      }else {
-        alert("등록 실패했습니다. 관리자에게 문의하세요.")
+      } else {
+        alert("등록 실패했습니다. 관리자에게 문의하세요.");
       }
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   const statusRadio = (e:any) => {
     const selectItem = e.target.value;
@@ -218,10 +217,8 @@ const ModalComponent = styled.div`
 `
 const ModaltopBox = styled.div`
   width: 100%;
-  //padding-bottom: 10px;
   position: relative;
   margin-top: 10px;
-  //background-color: rosybrown;
   display: flex;
 `
 
