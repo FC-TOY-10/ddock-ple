@@ -23,7 +23,7 @@ export const getWeeklySummary = async () => {
       period: 'weekly',
       userId: getUserData()?.email ?? ''
     }
-    const response = await apiInstance.get('api/expenses/summary', { params })
+    const response = await apiInstance.get('/expenses/summary', { params })
     return response.data
   } catch (error) {
     return error as AxiosError
@@ -70,46 +70,46 @@ export const searchByDateCategory = async (searchQuery: ISearchQuery) => {
 export const fetchExpense = async (period: string, userId: string) => {
   try {
     const response = await apiInstance.get('/expenses/summary', {
-      params: { period, userId },
-    });
-    return response.data;
+      params: { period, userId }
+    })
+    return response.data
   } catch (error) {
-    console.error(error);
-    return [];
+    console.error(error)
+    return []
   }
-};
+}
 
 // 달력 호출 함수
-export const fetchCalendar = async (year: Number, month: Number, userId:string) => {
+export const fetchCalendar = async (year: Number, month: Number, userId: string) => {
   try {
     const response = await apiInstance.get('/expenses/calendar', {
-      params: { year, month, userId : getUserData()?.email ?? '' },
-    });
-    return response.data;
+      params: { year, month, userId: getUserData()?.email ?? '' }
+    })
+    return response.data
   } catch (error) {
-    console.error(error);
-    return [];
+    console.error(error)
+    return []
   }
-};
+}
 
 // 지출 정보 업데이트 함수
 export const updateExpense = async (expenseData: ExpenseData, expenseId: string) => {
   try {
-    const response = await apiInstance.put(`/expenses/${expenseId}`, expenseData);
-    return response.data;
+    const response = await apiInstance.put(`/expenses/${expenseId}`, expenseData)
+    return response.data
   } catch (error) {
-    console.error(error);
-    return null;
+    console.error(error)
+    return null
   }
-};
+}
 
 // 지출 정보 삭제 함수
 export const deleteExpense = async (expenseId: string) => {
   try {
-    const response = await apiInstance.delete(`/expenses/${expenseId}`);
-    return response.data;
+    const response = await apiInstance.delete(`/expenses/${expenseId}`)
+    return response.data
   } catch (error) {
-    console.error(error);
-    return null;
+    console.error(error)
+    return null
   }
-};
+}
