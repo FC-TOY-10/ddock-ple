@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom'
-import { Layout, Layout2, AuthGuard } from 'components/index'
+import { Layout, HeaderLayout, AuthGuard } from 'components/index'
 
 import { HomePage, WeeklyPage, Chart, Monthly, LoginPage, Search } from 'pages/index'
 import { SignUp } from 'components/index'
@@ -12,24 +12,30 @@ export const App = () => {
         element={<Layout />}>
         <Route
           index
-
-          element={<LoginPage />}/>
+          element={<LoginPage />}
+        />
         <Route
           path="signup"
-          element={<SignUp />}/>
-
+          element={<SignUp />}
+        />
       </Route>
-
       <Route
         element={
           <AuthGuard>
-            <Layout2 />
+            <Layout />
           </AuthGuard>
         }>
         <Route
           path="/"
           element={<HomePage />}
         />
+      </Route>
+      <Route
+        element={
+          <AuthGuard>
+            <HeaderLayout />
+          </AuthGuard>
+        }>
         <Route
           path="/calendar"
           element={<Monthly />}

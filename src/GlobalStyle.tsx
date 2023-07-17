@@ -4,13 +4,13 @@ const GlobalStyle = createGlobalStyle`
  ${reset};
  
  :root {
-  --color-primary: #ddd6fe;
+  --color-primary: #953fff;
   --color-accent: #88f6e4;
   --color-white: #fff;
   --color-black: #000;
   --color-bg: #f4f4f4;
   --color-gray-ddd: #ddd;
-  --color-tab-active: #8267f7;
+  --color-tab-active: #953fff;
  }
  
   
