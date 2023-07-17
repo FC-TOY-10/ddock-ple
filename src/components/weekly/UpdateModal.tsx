@@ -1,8 +1,7 @@
-import { Modal } from '../common';
 import styled from 'styled-components';
 import { useState,FormEvent, ChangeEvent } from 'react';
 import { Calendar, ExpenseData } from '@/types';
-import { Input } from '@/components';
+import { Input, Modal } from '@/components';
 import { useStore } from '@/store';
 
 type UpdateModalProps = {

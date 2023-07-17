@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchCalendar } from '@/apis/Expense';
+import { fetchCalendar } from '@/apis';
 import { WeekSummary,  DailyExpense } from '@/components';
 import { calculateWeekly } from '@/utils';
 import { useStore } from '@/store';

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { HomeModal, Spinner } from 'components/index';
-import { fetchExpense } from '@/apis/Expense';
+import { fetchExpense } from '@/apis';
 import { TotalAmount } from '@/types';
 import { useStore } from '@/store';
 

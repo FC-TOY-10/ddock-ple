@@ -65,3 +65,51 @@ export const searchByDateCategory = async (searchQuery: ISearchQuery) => {
     return error as AxiosError
   }
 }
+
+// 월간, 주간, 일간 소비량 호출 함수
+export const fetchExpense = async (period: string, userId: string) => {
+  try {
+    const response = await apiInstance.get('/expenses/summary', {
+      params: { period, userId },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+// 달력 호출 함수
+export const fetchCalendar = async (year: Number, month: Number, userId:string) => {
+  try {
+    const response = await apiInstance.get('/expenses/calendar', {
+      params: { year, month, userId : getUserData()?.email ?? '' },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+// 지출 정보 업데이트 함수
+export const updateExpense = async (expenseData: ExpenseData, expenseId: string) => {
+  try {
+    const response = await apiInstance.put(`/expenses/${expenseId}`, expenseData);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+// 지출 정보 삭제 함수
+export const deleteExpense = async (expenseId: string) => {
+  try {
+    const response = await apiInstance.delete(`/expenses/${expenseId}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};

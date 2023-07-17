@@ -1,7 +1,12 @@
 import { Modal } from "../common/Modal";
 import { Input } from '@/components'
 
-export const HomeModal = ({ setGoal, closeModal }) => {
+interface HomeModalProps {
+  setGoal: (goalAmount: number) => void;
+  closeModal: () => void;
+}
+
+export const HomeModal = ({ setGoal, closeModal }: HomeModalProps) => {
 
   // 폼 제출 시 목표 금액 설정 및 모달 닫기
   const handleSubmit = (e) => {

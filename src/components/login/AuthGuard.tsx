@@ -1,6 +1,8 @@
 import { useEffect, useState, ReactNode } from "react";
 import {getAuth, onAuthStateChanged} from "firebase/auth";
 import { Navigate } from "react-router-dom";
+import { LoadingSpinner } from "@/components";
+import styled from "styled-components";
 
 interface AuthGuardProps {
   children: ReactNode;
@@ -23,9 +25,19 @@ export const AuthGuard = ({ children, fallback = <Navigate to="/login" /> }: Aut
   }, [auth]);
 
   if (isCheckingAuth) {
-    return <div>Loading...</div>;
+    return (
+      <SpinnerWrapper>
+        <LoadingSpinner />
+      </SpinnerWrapper>
+    );
   }
 
   return isLoggedIn ? <>{children}</> : <>{fallback}</>;
 };
 
+const SpinnerWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;

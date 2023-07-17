@@ -11,7 +11,7 @@ export const SignUp = () => {
   const navigate = useNavigate();
 
   // 회원가입 기능 
-  const register = async () => {
+  const handleRegister = async () => {
     //이메일, 패스워드 넣으면
     await createUserWithEmailAndPassword(
       auth,
@@ -49,7 +49,7 @@ export const SignUp = () => {
             setRegisterPassword(e.target.value);
           }}
         />
-        <button onClick={register}>회원가입</button>
+        <button onClick={handleRegister}>회원가입</button>
       </Box>
     </Container>
   );

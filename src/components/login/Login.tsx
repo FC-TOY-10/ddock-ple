@@ -38,7 +38,7 @@ export const Login = () => {
   };
 
   // 이메일 로그인 처리
-  const emailLogin = () => {
+  const handleEmailLogin = () => {
     signInWithEmailAndPassword(auth, loginEmail, loginPassword)
       .then((result) => {
         setUserData(result.user);
@@ -66,7 +66,7 @@ export const Login = () => {
           onChange={(e) => {
             setLoginPassword(e.target.value);
         }}/>
-        <button onClick={emailLogin}>로그인</button>
+        <button onClick={handleEmailLogin}>로그인</button>
 
         <SignUpLink to="/login/signup">회원가입</SignUpLink>
         <GoogleLogin onClick={handleAuth}>

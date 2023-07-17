@@ -24,9 +24,9 @@ export const ToggleButton = ({ expense, index, weekIndex }:ToggleButtonProps) =>
   const updateExpense = useStore((state) => state.updateExpense); 
 
   // 버튼의 표시 여부를 전환하는 함수
-  const toggleVisibility = () => {
+  const handleVision = () => {
     // 버튼은 화면에 1개만 출력
-    if (activeToggleButton && activeToggleButton !== toggleVisibility) {
+    if (activeToggleButton && activeToggleButton !== handleVision) {
       activeToggleButton(false);
     }
     // 현재 버튼의 표시 상태를 전환
@@ -54,11 +54,11 @@ export const ToggleButton = ({ expense, index, weekIndex }:ToggleButtonProps) =>
     <>
       {/* 토글 버튼 */}
       {!showButtons && (
-        <AiOutlinePlus tabIndex={0} onClick={toggleVisibility} />
+        <AiOutlinePlus tabIndex={0} onClick={handleVision} />
       )}
        {/* 수정 및 삭제 버튼*/}
       {showButtons && (
-        <div onClick={toggleVisibility}>
+        <div onClick={handleVision}>
           <Button text="수정" onClick={() => setShowUpdateModal(true)} />
           <Button text="삭제" secondary onClick={() => setShowDeleteModal(true)}/>
         </div>

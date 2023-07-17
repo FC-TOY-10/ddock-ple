@@ -1,6 +1,6 @@
 import create from 'zustand';
 import { Calendar, ExpenseData } from './types';
-import { deleteExpense, updateExpense } from './apis/Expense';
+import { deleteExpense, updateExpense } from './apis';
 
 const initialUserData = localStorage.getItem('userData')
   ? JSON.parse(localStorage.getItem('userData') || '{}')
