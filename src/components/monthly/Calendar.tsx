@@ -6,6 +6,7 @@ import { AiFillPlusCircle } from 'react-icons/ai'
 import { BsTrash, BsPencil, BsCheckSquare } from "react-icons/bs";
 import interactionPlugin from '@fullcalendar/interaction';
 import { ModalContent } from "./InputModal";
+import { getUserData } from 'utils/index'
 import { calendarApi, updateCalendar, deleteItem, updateAmount } from "@/apis/calendar";
 
 interface TResult {
@@ -29,7 +30,7 @@ interface ViewDetailType  {
 }
 
 export default function Full () {
-  const [selectDate, setSelectDate] = useState(new Date());
+  const [, setSelectDate] = useState(new Date());
   const [showModal, setShowModal] = useState(false);
   const [viewDetail, setViewDetail] = useState<ViewDetailType[]>([]);
   const [viewData, setViewData] = useState<any>([{
@@ -52,9 +53,7 @@ export default function Full () {
 
 
   const Search = (params?:any) => { 
-    console.log(params);
     let sysdatetime:any = null;
-    console.log(params)
     if(params){
       sysdatetime = params
     }else{
@@ -112,7 +111,6 @@ export default function Full () {
       }
     },[]
     );
-    console.log(formattedData);
     return formattedData;
   }
   
@@ -134,18 +132,17 @@ export default function Full () {
     setShowModal(false);
   };
 
-  const getData = async(year: string,month: string) => {
-    const userId = `team10`
-    try {
-      const response = await calendarApi(year, month, userId);
-      console.log(response.data);
-      return response;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  };
+const getData = async (year: string, month: string) => {
+  const userId = getUserData()?.email ?? '';
 
+  try {
+    const response = await calendarApi(year, month, userId);
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 
   const handleblankDateClick = () => {
     setViewDetail([]);
