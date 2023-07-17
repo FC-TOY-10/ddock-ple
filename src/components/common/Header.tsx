@@ -2,7 +2,6 @@ import { headerLocations } from 'constants/index'
 import { styled } from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
 import { AiOutlineSearch } from 'react-icons/ai'
-import { Logout } from 'components/index'
 
 export const Header = () => {
   const location = headerLocations.find(location => location.path === useLocation().pathname) ?? {
@@ -18,7 +17,6 @@ export const Header = () => {
           <AiOutlineSearch />
         </SearchLink>
       )}
-      <Logout />
     </HeaderContainer>
   )
 }

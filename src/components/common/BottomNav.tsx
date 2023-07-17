@@ -9,8 +9,8 @@ import {
   AiOutlineSchedule,
   AiFillPieChart,
   AiOutlinePieChart,
-  AiOutlineLogout
 } from 'react-icons/ai'
+import {Logout} from '@/components'
 
 export const BottomNav = () => {
   const path = useLocation().pathname
@@ -33,10 +33,8 @@ export const BottomNav = () => {
         <TabItem isActive={path === '/chart'}>
           <Link to="/chart">{path === '/chart' ? <AiFillPieChart /> : <AiOutlinePieChart />}</Link>
         </TabItem>
-        <TabItem isActive={path === '/logout'}>
-          <Link to="/">
-            <AiOutlineLogout />
-          </Link>
+        <TabItem isActive={false}>
+          <Logout />
         </TabItem>
       </ul>
     </Navigation>
