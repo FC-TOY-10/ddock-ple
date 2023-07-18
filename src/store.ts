@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { Calendar, ExpenseData } from 'types/index'
+import { Calendar } from 'types/index'
 import { deleteExpense, updateExpense } from 'apis/index'
 import { User } from '@firebase/auth'
 

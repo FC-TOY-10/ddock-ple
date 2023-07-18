@@ -83,7 +83,7 @@ export const fetchExpense = async (period: string, userId: string) => {
 export const fetchCalendar = async (year: Number, month: Number, userId: string) => {
   try {
     const response = await apiInstance.get('/expenses/calendar', {
-      params: { year, month, userId: getUserData()?.email ?? '' }
+      params: { year, month, userId }
     })
     return response.data
   } catch (error) {
