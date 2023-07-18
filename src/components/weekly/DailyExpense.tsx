@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { GoDotFill } from 'react-icons/go'
+import { chartCategory } from 'constants/index'
 import { Calendar } from 'types/index'
 import { ToggleButton } from 'components/index'
 
@@ -16,14 +16,18 @@ export const DailyExpense = ({ dailyExpenses, weekIndex }: DailyExpenseProps) =>
         <DailyContainer key={index}>
           {/* 날짜 표시 */}
           <DateBox>
-            <GoDotFill />
             {new Date(expense.date).toLocaleDateString(undefined, {
               month: 'long',
               day: 'numeric'
             })}
           </DateBox>
           {/* 카테고리 */}
-          <Category>{expense.category}</Category>
+          <Category
+            categoryColor={
+              chartCategory.find(c => c.category === expense.category)?.borderColor ?? '#333'
+            }>
+            {expense.category}
+          </Category>
           {/* 칸 나누기 */}
           <FlexibleSpace />
           {/* 금액 */}
@@ -41,13 +45,15 @@ export const DailyExpense = ({ dailyExpenses, weekIndex }: DailyExpenseProps) =>
 }
 
 const DailyWrapper = styled.div`
-  padding: 10px;
-  border: 2px solid black;
+  padding: 10px 20px;
+  /* border: 2px solid black; */
+  background-color: rgba(77, 77, 77, 0.1);
+  border-radius: 8px;
 `
 
 const DailyContainer = styled.div`
   display: flex;
-  padding: 5px 0;
+  padding: 10px 0;
 `
 
 const DateBox = styled.div`
@@ -55,8 +61,8 @@ const DateBox = styled.div`
   flex-basis: 150px;
 `
 
-const Category = styled.div`
-  color: blue;
+const Category = styled.div<{ categoryColor: string }>`
+  color: ${({ categoryColor }) => categoryColor};
   font-weight: bold;
 `
 

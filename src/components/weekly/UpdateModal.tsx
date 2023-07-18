@@ -38,11 +38,11 @@ export const UpdateModal = ({ closeModal, expense, onUpdate }: UpdateModalProps)
 
   return (
     <Modal closeModal={closeModal}>
-      <form
+      <EditForm
         onSubmit={handleSubmit}
         style={{ display: 'flex', flexDirection: 'column' }}>
         {/* 금액 수정란 */}
-        <label htmlFor="amount">금액: </label>
+        <label htmlFor="amount">금액 : </label>
         <CustomInput
           type="number"
           id="amount"
@@ -53,7 +53,7 @@ export const UpdateModal = ({ closeModal, expense, onUpdate }: UpdateModalProps)
         />
         <br />
         {/* 카테고리 수정란 */}
-        <label htmlFor="category">카테고리: </label>
+        <label htmlFor="category">카테고리 : </label>
         <CategorySelect
           id="category"
           value={category}
@@ -70,13 +70,33 @@ export const UpdateModal = ({ closeModal, expense, onUpdate }: UpdateModalProps)
           <option value="기타">기타</option>
         </CategorySelect>
         <button type="submit">수정</button>
-      </form>
+      </EditForm>
     </Modal>
   )
 }
 
+const EditForm = styled.form`
+  min-width: 240px;
+
+  button {
+    margin-top: 20px;
+    outline: none;
+    border: none;
+    height: 40px;
+    background-color: #7b68ee;
+    color: var(--color-white);
+    border-radius: 4px;
+  }
+
+  select {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+`
+
 const CustomInput = styled(Input)`
   margin-top: 5px;
+  border-radius: 4px;
 `
 
 const CategorySelect = styled.select`
@@ -85,7 +105,14 @@ const CategorySelect = styled.select`
   padding: 1rem 0.75rem;
   margin-bottom: 5px;
   border: 1px solid #a1a1a1;
+  border-radius: 4px;
   cursor: pointer;
+
+  background-image: url('caret-down.svg');
+  background-size: 20px;
+  background-repeat: no-repeat;
+  background-position: calc(100% - 8px) center;
+
   &:focus {
     outline: none;
   }

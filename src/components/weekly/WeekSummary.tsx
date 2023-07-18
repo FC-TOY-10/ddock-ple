@@ -1,14 +1,15 @@
-import { AiOutlineMenu } from 'react-icons/ai'
 import styled from 'styled-components'
-import { Calendar } from '@/types'
+import { Calendar } from 'types/index'
+import { BiChevronDown, BiChevronUp } from 'react-icons/bi'
 
 interface WeekSummaryProps {
   weekExpenses: Calendar[]
   index: number
   onClick: () => void
+  isOpened: boolean
 }
 
-export const WeekSummary = ({ weekExpenses, index, onClick }: WeekSummaryProps) => {
+export const WeekSummary = ({ weekExpenses, index, onClick, isOpened }: WeekSummaryProps) => {
   // 주 지출 총액 계산
   const totalAmount = weekExpenses.reduce(
     (acc: number, expense: Calendar) => acc + expense.amount,
@@ -30,30 +31,37 @@ export const WeekSummary = ({ weekExpenses, index, onClick }: WeekSummaryProps) 
   return (
     <WeekContainer
       key={index}
+      isOpend={isOpened}
       onClick={onClick}>
-      <AiOutlineMenu />
+      <div className="icon">{isOpened ? <BiChevronUp /> : <BiChevronDown />}</div>
       <WeekTitle>{`${weekStartDay} ~ ${weekEndDay} (${index + 1}주차)`}</WeekTitle>
       <TotalAmount>{totalAmount.toLocaleString()}원</TotalAmount>
     </WeekContainer>
   )
 }
 
-const WeekContainer = styled.div`
+const WeekContainer = styled.div<{ isOpend: boolean }>`
   display: flex;
   position: relative;
   cursor: pointer;
   align-items: center;
   padding: 30px 0;
-  border-bottom: 1px solid #ececec;
+  border-bottom: 1px solid ${({ isOpend }) => (isOpend ? 'transparent' : '#ececec')};
+
+  .icon {
+    font-size: 24px;
+  }
 `
 
 const WeekTitle = styled.div`
   font-weight: bold;
   margin-left: 10px;
+  font-size: 16px;
 `
 
 const TotalAmount = styled.div`
   position: absolute;
   right: 0;
   font-weight: bold;
+  font-size: 18px;
 `

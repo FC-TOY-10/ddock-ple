@@ -1,4 +1,4 @@
-import { Modal } from '../common'
+import { Modal } from 'components/index'
 import styled from 'styled-components'
 
 type DeleteModalProps = {
@@ -19,6 +19,7 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({ closeModal, onConfirm 
 }
 
 const ButtonContainer = styled.div`
+  margin-top: 20px;
   display: flex;
   justify-content: center;
   gap: 10px;
