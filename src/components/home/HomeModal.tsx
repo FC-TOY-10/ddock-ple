@@ -1,5 +1,4 @@
-import { Modal } from '../common/Modal'
-import { Input } from '@/components'
+import { Input, Modal } from 'components/index'
 
 interface HomeModalProps {
   setGoal: (goalAmount: number) => void
@@ -8,9 +7,9 @@ interface HomeModalProps {
 
 export const HomeModal = ({ setGoal, closeModal }: HomeModalProps) => {
   // 폼 제출 시 목표 금액 설정 및 모달 닫기
-  const handleSubmit = e => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const goalAmount = Number(e.target.goal.value)
+    const goalAmount = Number(e.currentTarget.goal.value)
     setGoal(goalAmount)
     closeModal()
   }

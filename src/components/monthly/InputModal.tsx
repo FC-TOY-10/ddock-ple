@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { Select, Radio } from 'antd'
 import { getUserData } from 'utils/index'
-import { submitApi } from '@/apis/calendar'
+import { submitApi } from 'apis/index'
 
 export function ModalContent({
   onClose,
@@ -78,7 +78,7 @@ export function ModalContent({
 
   const formatter = new Intl.NumberFormat('ko-KR')
 
-  const DatePick = forwardRef(({ value, onClick }: { value: string; onClick: () => void }, ref) => (
+  const DatePick = forwardRef(({ value, onClick }: { value: string; onClick: () => void }) => (
     <Datebutton
       className="custom-btn"
       onClick={onClick}>
@@ -100,12 +100,12 @@ export function ModalContent({
   const submitButton = () => {
     if (ViewData.amount === 0) {
       alert('금액을 입력해주세요.')
-      return false
+      return
     }
 
     if (ViewData.category === '' && ViewData.radioStatus !== '입금') {
       alert('카테고리를 선택해주세요.')
-      return false
+      return
     }
 
     let updatedAmount = ViewData.amount

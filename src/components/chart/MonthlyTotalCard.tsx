@@ -1,11 +1,11 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import { ICalendarResponse } from 'types/index'
 import { getUserData } from 'utils/index'
 
 import { styled } from 'styled-components'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { Pie } from 'react-chartjs-2'
-import moment, { Moment } from 'moment'
+import moment from 'moment'
 import 'moment/locale/ko'
 
 ChartJS.register(ArcElement, Tooltip, Legend)

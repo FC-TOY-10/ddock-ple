@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { AiOutlinePlus } from 'react-icons/ai'
-import { Button, UpdateModal, DeleteModal } from '@/components/index'
+import { UpdateModal, DeleteModal } from '@/components/index'
 import { Calendar } from 'types/index'
+import { BsTrash, BsPencil } from 'react-icons/bs'
 
 import { useStore } from '@/store'
+import { styled } from 'styled-components'
 
 type ToggleButtonProps = {
   expense: Calendar
@@ -16,7 +17,7 @@ type ToggleButtonAction = (value: boolean) => void
 let activeToggleButton: ToggleButtonAction | null = null
 
 export const ToggleButton = ({ expense, index, weekIndex }: ToggleButtonProps) => {
-  const [showButtons, setShowButtons] = useState(false)
+  // const [showButtons, setShowButtons] = useState(false)
   const [showUpdateModal, setShowUpdateModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
@@ -29,13 +30,13 @@ export const ToggleButton = ({ expense, index, weekIndex }: ToggleButtonProps) =
     if (activeToggleButton && activeToggleButton !== handleVision) {
       activeToggleButton(false)
     }
-    // 현재 버튼의 표시 상태를 전환
-    setShowButtons(prevShowButtons => {
-      if (!prevShowButtons) {
-        activeToggleButton = setShowButtons
-      }
-      return !prevShowButtons
-    })
+    // // 현재 버튼의 표시 상태를 전환
+    // setShowButtons(prevShowButtons => {
+    //   if (!prevShowButtons) {
+    //     activeToggleButton = setShowButtons
+    //   }
+    //   return !prevShowButtons
+    // })
   }
 
   //삭제 함수
@@ -51,28 +52,9 @@ export const ToggleButton = ({ expense, index, weekIndex }: ToggleButtonProps) =
   }
 
   return (
-    <>
-      {/* 토글 버튼 */}
-      {!showButtons && (
-        <AiOutlinePlus
-          tabIndex={0}
-          onClick={handleVision}
-        />
-      )}
-      {/* 수정 및 삭제 버튼*/}
-      {showButtons && (
-        <div onClick={handleVision}>
-          <Button
-            text="수정"
-            onClick={() => setShowUpdateModal(true)}
-          />
-          <Button
-            text="삭제"
-            secondary
-            onClick={() => setShowDeleteModal(true)}
-          />
-        </div>
-      )}
+    <ButtonWrapper>
+      <BsPencil onClick={() => setShowUpdateModal(true)} />
+      <BsTrash onClick={() => setShowDeleteModal(true)} />
       {/* 수정 모달 창 */}
       {showUpdateModal && (
         <UpdateModal
@@ -88,6 +70,12 @@ export const ToggleButton = ({ expense, index, weekIndex }: ToggleButtonProps) =
           onConfirm={handleDelete}
         />
       )}
-    </>
+    </ButtonWrapper>
   )
 }
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-left: 20px;
+`

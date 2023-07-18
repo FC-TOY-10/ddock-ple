@@ -49,6 +49,7 @@ export const Weekly = () => {
             weekExpenses={weekExpenses}
             index={weekIndex}
             onClick={() => handleWeekClick(weekIndex)}
+            isOpened={selectedWeek === weekIndex}
           />
           {/* 선택된 주의 일별 지출 정보 */}
           {selectedWeek === weekIndex && (
@@ -65,7 +66,7 @@ export const Weekly = () => {
 
 const Container = styled.div`
   max-width: 768px;
-  width: 80%;
+  width: 90%;
   margin-left: auto;
   margin-right: auto;
   min-height: calc(100vh - 114px);
