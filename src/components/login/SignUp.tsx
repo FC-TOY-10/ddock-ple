@@ -53,34 +53,34 @@ export const SignUp = () => {
             setRegisterPassword(e.target.value)
           }}
         />
-        <button onClick={handleRegister}>회원가입</button>
+        <SignUpButton onClick={handleRegister}>회원가입</SignUpButton>
       </Box>
     </Container>
   )
 }
 
 const Container = styled.div`
-  width: 768px;
+  max-width: 768px;
   margin-left: auto;
   margin-right: auto;
-  height: calc(100vh - 114px);
   display: flex;
   align-items: center;
   flex-direction: column;
-  background-color: #7a2af2;
+  background-color: var(--color-primary);
+  height: calc(100vh - 64px);
   position: relative;
+  color: var(--color-white);
 `
 
 const Title = styled.h1`
   font-size: 48px;
   margin-top: 30px;
-  color: white;
 `
 
 const Line = styled.div`
   width: 100%;
   height: 1px;
-  background-color: white;
+  background-color: var(--color-white);
   margin-top: 30px;
 `
 
@@ -100,4 +100,18 @@ const Box = styled.div`
   gap: 10px;
   position: absolute;
   top: 350px;
+  border-radius: 8px;
+
+  input {
+    border-radius: 4px;
+  }
+`
+
+const SignUpButton = styled.button`
+  outline: none;
+  border: none;
+  height: 40px;
+  background-color: #7b68ee;
+  color: var(--color-white);
+  border-radius: 4px;
 `
