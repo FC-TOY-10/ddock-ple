@@ -17,18 +17,16 @@ export const WeekSummary = ({ weekExpenses, index, onClick, isOpened }: WeekSumm
   )
 
   // 주 시작일 계산
-  const weekStartDay = new Date(weekExpenses[0].date).toLocaleDateString(
-    undefined, {
-      month: 'long',
-      day: 'numeric'
+  const weekStartDay = new Date(weekExpenses[0].date).toLocaleDateString(undefined, {
+    month: 'long',
+    day: 'numeric'
   })
 
   // 주 종료일 계산
   const weekEndDay = new Date(weekExpenses[weekExpenses.length - 1].date).toLocaleDateString(
-    undefined,{ 
-      month: 'long', 
-      day: 'numeric',
-    })
+    undefined,
+    { month: 'long', day: 'numeric' }
+  )
 
   return (
     <WeekContainer
