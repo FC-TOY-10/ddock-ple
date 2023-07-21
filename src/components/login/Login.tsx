@@ -92,15 +92,14 @@ export const Login = () => {
   )
 }
 
-const Container = styled.section`
+const Container = styled.div`
   max-width: 768px;
   margin-left: auto;
   margin-right: auto;
   display: flex;
   align-items: center;
   flex-direction: column;
-  background-color: var(--color-primary);
-  height: calc(100vh - 64px);
+  padding-bottom: 20px;
   position: relative;
 `
 
@@ -118,10 +117,9 @@ const Line = styled.div`
 `
 
 const MainLogo = styled.img`
-  width: 200px;
-  height: 200px;
-  position: absolute;
-  top: 130px;
+  width: 180px;
+  height: 180px;
+  margin-top: 30px;
 `
 
 const Box = styled.div`
@@ -131,8 +129,7 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  position: absolute;
-  top: 350px;
+  margin-top: 20px;
   border-radius: 8px;
 
   input {
