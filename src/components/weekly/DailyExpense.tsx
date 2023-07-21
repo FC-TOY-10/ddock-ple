@@ -18,7 +18,8 @@ export const DailyExpense = ({ dailyExpenses, weekIndex }: DailyExpenseProps) =>
           <DateBox>
             {new Date(expense.date).toLocaleDateString(undefined, {
               month: 'long',
-              day: 'numeric'
+              day: 'numeric',
+              timeZone: "Asia/Seoul"
             })}
           </DateBox>
           {/* 카테고리 */}
