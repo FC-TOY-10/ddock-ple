@@ -219,11 +219,10 @@ export function ModalContent({
 }
 
 const ModalComponent = styled.div`
-  width: 500px;
+  width: 90%;
   margin: auto;
-  left: 100px;
+  left: 10%;
   border-radius: 10px;
-  box-shadow: 1px gray;
   padding-bottom: 90px;
   background-color: #ffff;
   position: absolute;
@@ -246,14 +245,14 @@ const DateBox = styled.div`
   font-weight: bold;
 `
 const XbuttonBox = styled.div`
-  width: 30px;
+  width: 6%;
   height: 30px;
-  position: relative;
-  left: 290px;
+  position: absolute;
+  left: 90%;
   top: 8px;
 
   button {
-    width: inherit;
+    width: 100%;
     height: inherit;
     border: none;
     background-color: #d8d8d8;
@@ -275,7 +274,7 @@ const InputBox = styled.div`
   }
 
   input {
-    width: 350px;
+    width: 40%;
     height: 70px;
     position: relative;
     top: 10px;
@@ -315,25 +314,33 @@ const ButtonBox = styled.div`
   width: 100%;
   height: 100px;
   margin-top: 30px;
-  //background-color: red;
+  position: relative;
+  display: flex;
 `
 const ButtonInner = styled.div`
-  width: 350px;
+  width: 100%;
   padding-bottom: 15px;
-  //background-color: pink;
-  margin: auto;
+  position: relative;
+
+  .ant-radio-group{
+    position: relative;
+    left: 20%;
+    width: 60%;
+    display: flex;
+  }
 `
 
 const StyledButton = styled.button<{ backgroundColor: string; color: string }>`
   background-color: ${props => props.backgroundColor};
   color: ${props => props.color};
   /* 원하는 스타일 속성 추가 */
-  width: 150px;
+  width: 50%;
   height: 65px;
   margin: 10px;
   padding: 5px 10px;
   font-size: 16px;
   border: none;
+  position: relative;
   border-radius: 4px;
   cursor: pointer;
 `
@@ -346,5 +353,8 @@ const Register = styled.div`
   button {
     width: inherit;
     height: inherit;
+    background-color: #F4E0B9;
+    border: none;
+    border-radius: 5px;
   }
 `
