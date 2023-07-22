@@ -11,7 +11,8 @@ import { calendarApi, updateCalendar, deleteItem, updateAmount } from "@/apis/ca
 
 interface TResult {
   _id : string;
-  title: number;
+  title: string;
+  titleView:number;
   date: string;
 };
 
@@ -43,7 +44,8 @@ export default function Full () {
   
   const [viewDrow, setViewDrow] = useState<TResult[]>([{
     _id:""
-    ,title:0
+    ,title:""
+    ,titleView:0
     ,date: ""
   }]);
   
@@ -73,33 +75,33 @@ export default function Full () {
     // 날짜별로 데이터를 그룹화
     const dataEntries = Object.entries(data);
     const formattedData = dataEntries.reduce(
-    (acc: Array<{ title: number; date: string; _id: string }>, [, value]) => {
+    (acc: Array<{ title:string; titleView:number, date:string; _id:string }>, [, value]) => {
     if (Array.isArray(value)) {
         const subAcc = value.reduce(
           (
-            subAcc: Array<{ title: number; date: string; _id: string; }>,
-            cur: { amount: number; date: string; _id: string; }
+            subAcc: Array<{ title: string; titleView:number; date: string; _id: string; }>,
+            cur: { amountText:string; amount: number; date: string; _id: string; }
           ) => {
                 const parsedDate = new Date(cur.date);
                 const dateKey = parsedDate.toISOString().split('T')[0];
                 const foundPositive = subAcc.find(
-                  (item) => item.date === dateKey && item.title >= 0
+                  (item) => item.date === dateKey && item.titleView >= 0
                 );
                 const foundNegative = subAcc.find(
-                  (item) => item.date === dateKey && item.title < 0
+                  (item) => item.date === dateKey && item.titleView < 0
                 );
 
                 if (cur.amount >= 0) {
                   if (foundPositive) {
-                      foundPositive.title += cur.amount;
+                    foundPositive.title = formatter.format(parseInt(foundPositive.title.replace(",","")) + cur.amount);
                   } else {
-                      subAcc.push({ title: cur.amount, date: dateKey, _id: cur._id, });
+                      subAcc.push({ title: formatter.format(cur.amount), titleView: cur.amount, date: dateKey, _id: cur._id, });
                   }
                 } else {
                   if (foundNegative) {
-                      foundNegative.title += cur.amount;
+                    foundNegative.title = formatter.format(parseInt(foundNegative.title.replace(",","")) + cur.amount);
                   } else {
-                      subAcc.push({ title: cur.amount, date: dateKey, _id: cur._id, });
+                      subAcc.push({ title: formatter.format(cur.amount),titleView: cur.amount, date: dateKey, _id: cur._id, });
                   }
                 }
                 return subAcc;
@@ -111,6 +113,7 @@ export default function Full () {
       }
     },[]
     );
+    console.log(formattedData);
     return formattedData;
   }
   
@@ -260,6 +263,8 @@ const getData = async (year: string, month: string) => {
     }
   };
 
+  const formatter = new Intl.NumberFormat("ko-KR");
+
   return (
     <>
     <PriceCntainer>
@@ -293,7 +298,7 @@ const getData = async (year: string, month: string) => {
                       />
                     ) : (
                       <>
-                        <div>{Math.abs(item.amount)}
+                        <div>{formatter.format(Math.abs(item.amount))} 
                           <BsPencil
                             className="penIcon"
                             onClick={() => handleEditButtonClick(item._id)}
@@ -318,55 +323,48 @@ const getData = async (year: string, month: string) => {
               ) : null
             )}
         </ListboxLeft>
-
-
         <MinusMoney>지출</MinusMoney>
         <ListboxRight>
-        {viewDetail &&
-          viewDetail.map((item) => (
-            item.amount < 0 ? (
-              <InnerList key={item._id}>
-                <div className="innerText">
-                  {editingItemId === item._id ? (
-                    <input
-                      type="text"
-                      value={editedTitle}
-                      onChange={(e) => handleInputChange(e)}
-                      autoFocus
-                    />
-                  ) : (
-                    <>
-                      <div>{Math.abs(item.amount)}
-                        <BsPencil
-                          className="penIcon"
-                          onClick={() => handleEditButtonClick(item._id)}
-                        />
-                      </div>
-                    </>  
-                  )}
-                  {editingItemId === item._id && (
-                    <div className="editControls">
-                      <BsCheckSquare className="checkIcon"
-                      onClick={() => handleOutEditEnter(item._id)} />
-                    </div>
-                  )}
-                  <BsTrash
-                    className="trashIcon"
-                    onClick={() => onDeletelist(item._id)}
+        {viewDetail && viewDetail.map((item) => (
+          item.amount < 0 ? (
+            <InnerList key={item._id}>
+              <div className="innerText">
+                {editingItemId === item._id ? (
+                  <input
+                    type="text"
+                    value={editedTitle}
+                    onChange={(e) => handleInputChange(e)}
+                    autoFocus
                   />
-                </div>
-                
-              </InnerList>
-            ) : null
-          ))}
+                ) : (
+                  <>
+                    <div>{formatter.format(Math.abs(item.amount))}
+                      <BsPencil
+                        className="penIcon"
+                        onClick={() => handleEditButtonClick(item._id)}
+                      />
+                    </div>
+                  </>  
+                )}
+                {editingItemId === item._id && (
+                  <div className="editControls">
+                    <BsCheckSquare className="checkIcon"
+                    onClick={() => handleOutEditEnter(item._id)} />
+                  </div>
+                )}
+                <BsTrash
+                  className="trashIcon"
+                  onClick={() => onDeletelist(item._id)}
+                />
+              </div> 
+            </InnerList>
+          ) : null
+        ))}
         </ListboxRight>
-
       </ListboxCenter>
-
       <PlusCirclreBox>
         <AiFillPlusCircle className="plusbutton" onClick={handlePlus}/>
       </PlusCirclreBox>
-
       {showModal && (
        <ModalContent onClose={handleModalClose} onSearch={Search} />
       )}
@@ -442,6 +440,8 @@ const CalendarBox = styled.div`
   }
 
   .fc .fc-daygrid-day-number {
+    position: relative;
+    right: 20px;
     font-size: 13px;
     font-weight: bold;
     margin-left: 20px;
@@ -468,7 +468,7 @@ const CalendarBox = styled.div`
   }
 
   .fc .fc-daygrid-day-top {
-    position: relative;
+    //position: relative;
     right: 60px;
   }
 
