@@ -54,5 +54,6 @@ const Container = styled.div`
 const OutletWrapper = styled.div<{ hasHeader: boolean }>`
   flex-grow: 1;
   margin-top: ${props => (props.hasHeader ? `56px` : `0`)};
+  background-color: ${props => (props.hasHeader ? `var(--color-white);` : `var(--color-primary);`)};
   margin-bottom: 64px;
 `

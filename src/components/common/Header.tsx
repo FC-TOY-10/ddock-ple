@@ -32,6 +32,8 @@ const HeaderContainer = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 100;
+  overflow: hidden;
   /* position: relative; */
 
   h1 {

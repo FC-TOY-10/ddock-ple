@@ -81,8 +81,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  background-color: var(--color-primary);
-  height: calc(100vh - 64px);
+  padding-bottom: 20px;
   color: var(--color-white);
 `
 
